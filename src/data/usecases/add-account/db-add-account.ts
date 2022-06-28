@@ -1,5 +1,4 @@
-import { AddAccount, AddAccountModel } from '../../../presentation/controllers/signup/signup-protocols'
-import { Encrypter } from '../../protocols/encrypter'
+import { AddAccount, AddAccountModel, Encrypter } from './db-add-account-protocols'
 
 class DbAddAccount implements AddAccount {
   constructor (readonly encrypter: Encrypter) {
