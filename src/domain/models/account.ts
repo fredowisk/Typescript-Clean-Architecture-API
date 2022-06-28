@@ -5,4 +5,4 @@ interface AccountModel {
   password: string
 }
 
-export default AccountModel
+export { AccountModel }

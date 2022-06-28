@@ -4,4 +4,4 @@ interface AddAccountModel {
   password: string
 }
 
-export default AddAccountModel
+export { AddAccountModel }

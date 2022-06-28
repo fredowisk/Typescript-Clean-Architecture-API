@@ -1,12 +1,12 @@
-import AddAccount from '../../application/usecases/addAccount/add-account'
-import { MissingParamError, InvalidParamError } from '../errors'
-import { badRequest, serverError } from '../helpers/http-helper'
+import { MissingParamError, InvalidParamError } from '../../errors'
+import { badRequest, serverError } from '../../helpers/http-helper'
 import {
   Controller,
   EmailValidator,
   HttpRequest,
-  HttpResponse
-} from '../protocols'
+  HttpResponse,
+  AddAccount
+} from './signup-protocols'
 
 class SignUpController implements Controller {
   constructor (

@@ -1,8 +1,10 @@
-import AccountModel from '../../../domain/models/account'
-import AddAccountModel from './addAccountModel'
+import {
+  AccountModel,
+  AddAccountModel
+} from '../../../presentation/controllers/signup/signup-protocols'
 
 interface AddAccount {
   add: (account: AddAccountModel) => AccountModel
 }
 
-export default AddAccount
+export { AddAccount }
