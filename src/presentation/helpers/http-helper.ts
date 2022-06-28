@@ -1,11 +1,18 @@
-class BadRequest {
-  statusCode: number
-  body: Error
+import ServerError from '../errors/server-error'
+import { HttpResponse } from '../protocols/http'
 
-  constructor (error: Error) {
-    this.statusCode = 400
-    this.body = error
+const badRequest = (error: Error): HttpResponse => {
+  return {
+    statusCode: 400,
+    body: error
   }
 }
 
-export default BadRequest
+const serverError = (): HttpResponse => {
+  return {
+    statusCode: 500,
+    body: new ServerError()
+  }
+}
+
+export { badRequest, serverError }
