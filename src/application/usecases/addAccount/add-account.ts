@@ -4,7 +4,7 @@ import {
 } from '../../../presentation/controllers/signup/signup-protocols'
 
 interface AddAccount {
-  add: (account: AddAccountModel) => Promise<AccountModel>
+  add: (account: AddAccountModel) => AccountModel
 }
 
 export { AddAccount }
