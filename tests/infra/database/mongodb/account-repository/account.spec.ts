@@ -3,7 +3,7 @@ import { AccountMongoRepository } from '../../../../../src/infra/database/mongod
 
 describe('Account Mongo Repository', () => {
   beforeAll(async () => {
-    await MongoHelper.connect()
+    await MongoHelper.connect(process.env.MONGO_URL)
   })
 
   afterAll(async () => {
