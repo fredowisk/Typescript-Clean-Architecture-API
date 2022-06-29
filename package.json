@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest test/ --silent --noStackTrace --runInBand",
-    "test:verbose": "jest test/",
+    "test": "jest tests/ --silent --noStackTrace --runInBand",
+    "test:verbose": "jest tests/",
     "test:unit": "npm test -- --watch -c jest-unit-config.js",
     "test:integration": "npm test -- --watch -c jest-integration-config.js",
     "test:staged": "jest --findRelatedTests",
