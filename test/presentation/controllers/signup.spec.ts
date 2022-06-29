@@ -2,7 +2,6 @@ import SignUpController from '../../../src/presentation/controllers/signup/signu
 import {
   EmailValidator,
   AddAccount,
-  AccountModel,
   AddAccountModel
 } from '../../../src/presentation/controllers/signup/signup-protocols'
 import {
@@ -28,14 +27,8 @@ const makeEmailValidator = (): EmailValidator => {
 
 const makeAddAccount = (): AddAccount => {
   class AddAccountStub implements AddAccount {
-    async add (account: AddAccountModel): Promise<AccountModel> {
-      const fakeAccount = {
-        id: 'valid_id',
-        name: 'valid_name',
-        email: 'valid_email@mail.com',
-        password: 'valid_password'
-      }
-      return await Promise.resolve(fakeAccount)
+    async add (account: AddAccountModel): Promise<void> {
+      return await Promise.resolve()
     }
   }
 
@@ -219,11 +212,6 @@ describe('SignUp Controller', () => {
     const httpResponse = await sut.handle(httpRequest)
 
     expect(httpResponse.statusCode).toBe(200)
-    expect(httpResponse.body).toEqual({
-      id: 'valid_id',
-      name: 'valid_name',
-      email: 'valid_email@mail.com',
-      password: 'valid_password'
-    })
+    expect(httpResponse.body).toEqual({})
   })
 })

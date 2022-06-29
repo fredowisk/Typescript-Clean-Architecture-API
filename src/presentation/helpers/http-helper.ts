@@ -15,10 +15,10 @@ const serverError = (): HttpResponse => {
   }
 }
 
-const ok = (data: any): HttpResponse => {
+const ok = (): HttpResponse => {
   return {
     statusCode: 200,
-    body: data
+    body: {}
   }
 }
 
