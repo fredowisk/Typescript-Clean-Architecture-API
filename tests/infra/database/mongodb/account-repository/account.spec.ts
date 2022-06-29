@@ -10,6 +10,10 @@ describe('Account Mongo Repository', () => {
     await MongoHelper.disconnect()
   })
 
+  beforeEach(async () => {
+    await MongoHelper.clear('accounts')
+  })
+
   test('Should return nothing on success', async () => {
     const sut = new AccountMongoRepository()
     const spyAccountRepository = jest.spyOn(sut, 'add')
