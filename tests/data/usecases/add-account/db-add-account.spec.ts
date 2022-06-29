@@ -9,13 +9,7 @@ class EncrypterStub implements Encrypter {
 
 class AddAccountRepositoryStub implements AddAccountRepository {
   async add (account: AddAccountModel): Promise<void> {
-    // const fakeAccount = {
-    //   id: 'valid_id',
-    //   name: 'valid_name',
-    //   email: 'valid_email@mail.com',
-    //   password: 'hashed_password'
-    // }
-    return await Promise.resolve()
+
   }
 }
 

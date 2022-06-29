@@ -28,7 +28,7 @@ const makeEmailValidator = (): EmailValidator => {
 const makeAddAccount = (): AddAccount => {
   class AddAccountStub implements AddAccount {
     async add (account: AddAccountModel): Promise<void> {
-      return await Promise.resolve()
+
     }
   }
 
