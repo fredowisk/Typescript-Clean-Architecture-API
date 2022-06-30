@@ -41,7 +41,7 @@ class SignUpController implements Controller {
 
       return ok()
     } catch (error) {
-      return serverError()
+      return serverError(error)
     }
   }
 }
