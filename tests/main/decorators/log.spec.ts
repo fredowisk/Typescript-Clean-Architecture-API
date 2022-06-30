@@ -27,15 +27,20 @@ describe('Log Controller Decorator', () => {
         passwordConfirmation: 'any_password'
       }
     }
-    const httpResponse = await sut.handle(httpRequest)
-    expect(handleSpy).toHaveBeenCalledWith({
+    await sut.handle(httpRequest)
+    expect(handleSpy).toHaveBeenCalledWith(httpRequest)
+  })
+
+  test('Should return the same result of the controller', async () => {
+    const httpRequest = {
       body: {
         email: 'any_email@mail.com',
         name: 'any_name',
         password: 'any_password',
         passwordConfirmation: 'any_password'
       }
-    })
+    }
+    const httpResponse = await sut.handle(httpRequest)
     expect(httpResponse.statusCode).toBe(200)
     expect(httpResponse.body.name).toBe('Fred')
   })
