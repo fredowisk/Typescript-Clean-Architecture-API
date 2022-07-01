@@ -2,9 +2,17 @@ import { MissingParamError } from '@/presentation/errors/missing-param-error'
 import { badRequest, ok } from '@/presentation/helpers/http-helper'
 import { HttpRequest } from '@/presentation/protocols'
 import { LoginController } from '../../../../src/presentation/controllers/login/login'
+import { EmailValidator } from '../signup/signup-protocols'
 
 describe('Login Controller', () => {
-  const sut = new LoginController()
+  class EmailValidatorStub implements EmailValidator {
+    isValid (email: string): boolean {
+      return true
+    }
+  }
+
+  const emailValidatorStub = new EmailValidatorStub()
+  const sut = new LoginController(emailValidatorStub)
 
   const makeHttpRequest = (property?: string): HttpRequest => {
     const httpRequest: HttpRequest = {
@@ -28,6 +36,14 @@ describe('Login Controller', () => {
     const httpRequest = makeHttpRequest('password')
     const httpResponse = await sut.handle(httpRequest)
     expect(httpResponse).toEqual(badRequest(new MissingParamError('password')))
+  })
+
+  test('Should call EmailValidator with correct email', async () => {
+    const isValidSpy = jest.spyOn(emailValidatorStub, 'isValid')
+    const httpRequest = makeHttpRequest()
+    await sut.handle(httpRequest)
+    expect(isValidSpy).toBeCalledWith('any_email@mail.com')
+    expect(isValidSpy).toBeTruthy()
   })
 
   test('Should return 200 if controller is called with correct values', async () => {
