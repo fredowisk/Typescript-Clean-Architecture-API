@@ -111,6 +111,6 @@ describe('Login Controller', () => {
   test('Should return 200 if controller is called with correct values', async () => {
     const httpRequest = makeHttpRequest()
     const httpResponse = await sut.handle(httpRequest)
-    expect(httpResponse).toEqual(ok())
+    expect(httpResponse).toEqual(ok({ accessToken: 'access_token' }))
   })
 })
