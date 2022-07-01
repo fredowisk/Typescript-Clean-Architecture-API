@@ -50,23 +50,24 @@ const makeValidation = (): Validation => {
   return new ValidationStub()
 }
 
-const { sut, emailValidatorStub, addAccountStub, validationStub } = ((): SutTypes => {
-  const emailValidatorStub = makeEmailValidator()
-  const addAccountStub = makeAddAccount()
-  const validationStub = makeValidation()
+const { sut, emailValidatorStub, addAccountStub, validationStub } =
+  ((): SutTypes => {
+    const emailValidatorStub = makeEmailValidator()
+    const addAccountStub = makeAddAccount()
+    const validationStub = makeValidation()
 
-  const sut = new SignUpController(
-    emailValidatorStub,
-    addAccountStub,
-    validationStub
-  )
-  return {
-    sut,
-    emailValidatorStub,
-    addAccountStub,
-    validationStub
-  }
-})()
+    const sut = new SignUpController(
+      emailValidatorStub,
+      addAccountStub,
+      validationStub
+    )
+    return {
+      sut,
+      emailValidatorStub,
+      addAccountStub,
+      validationStub
+    }
+  })()
 
 const makeHttpRequest = (property?: string): HttpRequest => {
   const httpRequest: HttpRequest = {
@@ -176,5 +177,13 @@ describe('SignUp Controller', () => {
     await sut.handle(httpRequest)
     delete httpRequest.body.passwordConfirmation
     expect(validateSpy).toHaveBeenCalledWith(httpRequest.body)
+  })
+
+  test('Should return 400 if Validation returns an Error', async () => {
+    jest.spyOn(validationStub, 'validate').mockReturnValueOnce(new Error())
+    const httpRequest = makeHttpRequest()
+
+    const httpResponse = await sut.handle(httpRequest)
+    expect(httpResponse).toEqual(badRequest(new Error()))
   })
 })
