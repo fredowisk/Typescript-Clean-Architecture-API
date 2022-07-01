@@ -4,7 +4,8 @@ import { MissingParamError } from '@/presentation/errors/missing-param-error'
 import {
   badRequest,
   ok,
-  serverError
+  serverError,
+  unauthorized
 } from '@/presentation/helpers/http-helper'
 import {
   Controller,
@@ -36,7 +37,8 @@ class LoginController implements Controller {
         return badRequest(new InvalidParamError('email'))
       }
 
-      await this.authentication.auth(email, password)
+      const accessToken = await this.authentication.auth(email, password)
+      if (!accessToken) return unauthorized()
 
       return ok()
     } catch (error) {
