@@ -1,16 +1,20 @@
-import { Authentication } from '@/application/usecases/authentication/authentication'
-import { InvalidParamError } from '@/presentation/errors/invalid-param-error'
-import { MissingParamError } from '@/presentation/errors/missing-param-error'
-import { ServerError } from '@/presentation/errors/server-error'
+import {
+  Authentication,
+  EmailValidator,
+  HttpRequest
+} from '@/presentation/controllers/login/login-protocols'
+import {
+  InvalidParamError,
+  MissingParamError,
+  ServerError
+} from '@/presentation/errors'
 import {
   badRequest,
   ok,
   serverError,
   unauthorized
 } from '@/presentation/helpers/http-helper'
-import { HttpRequest } from '@/presentation/protocols'
-import { LoginController } from '../../../../src/presentation/controllers/login/login'
-import { EmailValidator } from '../signup/signup-protocols'
+import { LoginController } from '@/presentation/controllers/login/login'
 
 describe('Login Controller', () => {
   class EmailValidatorStub implements EmailValidator {
