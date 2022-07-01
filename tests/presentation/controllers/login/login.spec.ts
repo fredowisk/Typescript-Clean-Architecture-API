@@ -5,7 +5,8 @@ import { ServerError } from '@/presentation/errors/server-error'
 import {
   badRequest,
   ok,
-  serverError
+  serverError,
+  unauthorized
 } from '@/presentation/helpers/http-helper'
 import { HttpRequest } from '@/presentation/protocols'
 import { LoginController } from '../../../../src/presentation/controllers/login/login'
@@ -83,6 +84,15 @@ describe('Login Controller', () => {
     await sut.handle(httpRequest)
     const { email, password } = httpRequest.body
     expect(authSpy).toHaveBeenCalledWith(email, password)
+  })
+
+  test('Should reutrn 401 if invalid credentials are provided', async () => {
+    jest
+      .spyOn(authenticationStub, 'auth')
+      .mockReturnValueOnce(Promise.resolve(null))
+    const httpRequest = makeHttpRequest()
+    const httResponse = await sut.handle(httpRequest)
+    expect(httResponse).toEqual(unauthorized())
   })
 
   test('Should return 200 if controller is called with correct values', async () => {
