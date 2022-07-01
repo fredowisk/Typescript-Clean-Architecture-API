@@ -5,7 +5,7 @@ import {
   HttpRequest,
   HttpResponse
 } from '@/presentation/protocols/'
-import { LogControllerDecorator } from '../../../src/main/decorators/log'
+import { LogControllerDecorator } from '@/main/decorators/log'
 
 class ControllerStub implements Controller {
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {

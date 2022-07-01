@@ -1,5 +1,5 @@
-import { MongoHelper } from '../../../../../src/infra/database/mongodb/helpers/mongo-helper'
-import { ErrorMongoRepository } from '../../../../../src/infra/database/mongodb/log-repository/log'
+import { MongoHelper } from '@/infra/database/mongodb/helpers/mongo-helper'
+import { ErrorMongoRepository } from '@/infra/database/mongodb/log-repository/log'
 
 describe('Log Mongo Repository', () => {
   beforeAll(async () => {

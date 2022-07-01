@@ -1,5 +1,5 @@
-import { AddAccountModel, AddAccountRepository, Encrypter } from '../../../../src/data/usecases/add-account/db-add-account-protocols'
-import { DbAddAccount } from '../../../../src/data/usecases/add-account/db-add-account'
+import { AddAccountModel, AddAccountRepository, Encrypter } from '@/data/usecases/add-account/db-add-account-protocols'
+import { DbAddAccount } from '@/data/usecases/add-account/db-add-account'
 
 class EncrypterStub implements Encrypter {
   async encrypt (password: string): Promise<string> {

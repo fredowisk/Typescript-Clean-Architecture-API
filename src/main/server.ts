@@ -1,4 +1,4 @@
-import { MongoHelper } from '../infra/database/mongodb/helpers/mongo-helper'
+import { MongoHelper } from '@/infra/database/mongodb/helpers/mongo-helper'
 import env from './config/env'
 
 MongoHelper.connect(env.mongoUrl)
