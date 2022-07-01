@@ -7,7 +7,6 @@ import {
   Validation
 } from '@/presentation/controllers/signup/signup-protocols'
 import {
-  MissingParamError,
   InvalidParamError,
   ServerError
 } from '@/presentation/errors'
@@ -84,32 +83,6 @@ const makeHttpRequest = (property?: string): HttpRequest => {
 }
 
 describe('SignUp Controller', () => {
-  test('Should return 400 if no name is provided', async () => {
-    const httpRequest = makeHttpRequest('name')
-    const httpResponse = await sut.handle(httpRequest)
-    expect(httpResponse).toEqual(badRequest(new MissingParamError('name')))
-  })
-
-  test('Should return 400 if no email is provided', async () => {
-    const httpRequest = makeHttpRequest('email')
-    const httpResponse = await sut.handle(httpRequest)
-    expect(httpResponse).toEqual(badRequest(new MissingParamError('email')))
-  })
-
-  test('Should return 400 if no password is provided', async () => {
-    const httpRequest = makeHttpRequest('password')
-    const httpResponse = await sut.handle(httpRequest)
-    expect(httpResponse).toEqual(badRequest(new MissingParamError('password')))
-  })
-
-  test('Should return 400 if no passwordConfirmation is provided', async () => {
-    const httpRequest = makeHttpRequest('passwordConfirmation')
-    const httpResponse = await sut.handle(httpRequest)
-    expect(httpResponse).toEqual(
-      badRequest(new MissingParamError('passwordConfirmation'))
-    )
-  })
-
   test('Should return 400 if passwordConfirmation fails', async () => {
     const httpRequest = makeHttpRequest()
     httpRequest.body.passwordConfirmation = 'different_password'
