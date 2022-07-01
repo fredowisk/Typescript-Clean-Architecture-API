@@ -15,8 +15,8 @@ import {
 
 class LoginController implements Controller {
   constructor (
-    readonly emailValidator: EmailValidator,
-    readonly authentication: Authentication
+    private readonly emailValidator: EmailValidator,
+    private readonly authentication: Authentication
   ) {}
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
