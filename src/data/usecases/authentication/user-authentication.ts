@@ -2,7 +2,7 @@ import {
   Authentication,
   AuthenticationModel,
   HashComparer,
-  TokenGenerator,
+  Encrypter,
   LoadAccountByEmailRepository,
   UpdateAccessTokenRepository
 } from './user-authentication-protocols'
@@ -11,7 +11,7 @@ class UserAuthentication implements Authentication {
   constructor (
     private readonly loadAccountByEmailRepository: LoadAccountByEmailRepository,
     private readonly hashComparer: HashComparer,
-    private readonly tokenGenerator: TokenGenerator,
+    private readonly encrypter: Encrypter,
     private readonly updateAccessTokenRepository: UpdateAccessTokenRepository
   ) {}
 
@@ -29,7 +29,7 @@ class UserAuthentication implements Authentication {
 
     if (!isEqual) return null
 
-    const accessToken = await this.tokenGenerator.generate(user.id)
+    const accessToken = await this.encrypter.encrypt(user.id)
 
     await this.updateAccessTokenRepository.update(accessToken, user.id)
 
