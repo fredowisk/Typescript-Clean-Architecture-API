@@ -4,7 +4,11 @@ import { Controller } from '@/presentation/protocols/controller'
 import { loginValidation } from './login-validation'
 
 export const makeLoginController = (): Controller => {
-  const authentication = new UserAuthentication()
+  const loadAccountByEmailRepository = new LoadAccountByEmailRepository()
+  const hashComparer = new HashComparer()
+  const encrypterGenerator = new EncrypterGenerator()
+  const updateAccessTokenRepository = new UpdateAccessTokenRepository()
+  const authentication = new UserAuthentication(loadAccountByEmailRepository, hashComparer, encrypterGenerator, updateAccessTokenRepository)
 
   return new LoginController(authentication, loginValidation())
 }
