@@ -140,4 +140,14 @@ describe('Authentication', () => {
 
     await expect(promise).rejects.toThrow()
   })
+
+  test('Should call UserAuthentication with correct values', async () => {
+    const { email, password } = fakeAccount
+    const accessToken = await sut.auth({
+      email,
+      password
+    })
+
+    expect(accessToken).toBe('access_token')
+  })
 })
