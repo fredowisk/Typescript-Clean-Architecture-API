@@ -22,10 +22,11 @@ describe('Authentication', () => {
       new LoadAccountByEmailRepositoryStub()
     const sut = new UserAuthentication(loadAccountByEmailRepositoryStub)
     const loadSpy = jest.spyOn(loadAccountByEmailRepositoryStub, 'load')
+    const { email, password } = fakeAccount
     await sut.auth({
-      email: 'any_email@mail.com',
-      password: 'any_password'
+      email,
+      password
     })
-    expect(loadSpy).toHaveBeenCalledWith('any_email@mail.com')
+    expect(loadSpy).toHaveBeenCalledWith(email)
   })
 })
