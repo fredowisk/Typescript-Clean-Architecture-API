@@ -1,11 +1,11 @@
 import bcrypt from 'bcrypt'
-import { Encrypter } from '@/data/protocols/criptography/encrypter'
+import { Hasher } from '@/data/protocols/criptography/hasher'
 
-class BcryptAdapter implements Encrypter {
+class BcryptAdapter implements Hasher {
   constructor (readonly salt: number) {
   }
 
-  async encrypt (password: string): Promise<string> {
+  async hash (password: string): Promise<string> {
     return await Promise.resolve(bcrypt.hash(password, this.salt))
   }
 }
