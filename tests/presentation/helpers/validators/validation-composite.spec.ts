@@ -5,12 +5,15 @@ import { ValidationComposite } from '@/presentation/helpers/validators/validatio
 describe('Validation Composite', () => {
   class ValidationStub implements Validation {
     validate (input: any): Error {
-      return new InvalidParamError('field')
+      return null
     }
   }
 
   const validationStub = new ValidationStub()
-  test('Should return them same error if validation fails', () => {
+  test('Should return the same error of validation if validation fails', () => {
+    jest
+      .spyOn(validationStub, 'validate')
+      .mockReturnValueOnce(new InvalidParamError('field'))
     const sut = new ValidationComposite([validationStub])
     const error = sut.validate({
       field: 'any_value'
