@@ -10,11 +10,12 @@ describe('Validation Composite', () => {
   }
 
   const validationStubs = [new ValidationStub(), new ValidationStub()]
+  const sut = new ValidationComposite(validationStubs)
+
   test('Should return the same error of validation if validation fails', () => {
     jest
       .spyOn(validationStubs[1], 'validate')
       .mockReturnValueOnce(new InvalidParamError('field'))
-    const sut = new ValidationComposite(validationStubs)
     const error = sut.validate({
       field: 'any_value'
     })
@@ -28,12 +29,19 @@ describe('Validation Composite', () => {
       .mockReturnValueOnce(new Error())
     jest
       .spyOn(validationStubs[1], 'validate')
-      .mockReturnValueOnce(new InvalidParamError('field'))
-    const sut = new ValidationComposite(validationStubs)
+      .mockReturnValueOnce(null)
     const error = sut.validate({
       field: 'any_value'
     })
 
     expect(error).toEqual(new Error())
+  })
+
+  test('Should not return an Error if validation succeeds', () => {
+    const error = sut.validate({
+      field: 'any_value'
+    })
+
+    expect(error).toBeFalsy()
   })
 })
