@@ -1,6 +1,7 @@
 import { HashComparer } from '@/data/protocols/criptography/hash-comparer'
 import { TokenGenerator } from '@/data/protocols/criptography/token-generator'
 import { LoadAccountByEmailRepository } from '@/data/protocols/db/load-account-by-email-repository'
+import { UpdateAccessTokenRepository } from '@/data/protocols/db/update-access-token-repository'
 import { UserAuthentication } from '@/data/usecases/authentication/user-authentication'
 import { AccountModel } from '@/domain/models/account'
 
@@ -31,14 +32,22 @@ describe('Authentication', () => {
     }
   }
 
+  class UpdateAccessTokenRepositoryStub implements UpdateAccessTokenRepository {
+    async update (token: string, id: string): Promise<void> {
+      return Promise.resolve()
+    }
+  }
+
   const loadAccountByEmailRepositoryStub =
     new LoadAccountByEmailRepositoryStub()
   const hashComparerStub = new HashComparerStub()
   const tokenGeneratorStub = new TokenGeneratorStub()
+  const updateAccessTokenRepositoryStub = new UpdateAccessTokenRepositoryStub()
   const sut = new UserAuthentication(
     loadAccountByEmailRepositoryStub,
     hashComparerStub,
-    tokenGeneratorStub
+    tokenGeneratorStub,
+    updateAccessTokenRepositoryStub
   )
 
   test('Should call LoadAccountByEmailRepository with correct email', async () => {
@@ -149,5 +158,16 @@ describe('Authentication', () => {
     })
 
     expect(accessToken).toBe('access_token')
+  })
+
+  test('Should call UpdateAccessTokenRepository with correct values', async () => {
+    const updateSpy = jest.spyOn(updateAccessTokenRepositoryStub, 'update')
+    const { id, email, password } = fakeAccount
+    await sut.auth({
+      email,
+      password
+    })
+
+    expect(updateSpy).toHaveBeenCalledWith('access_token', id)
   })
 })
