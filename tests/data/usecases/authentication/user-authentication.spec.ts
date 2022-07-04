@@ -170,4 +170,15 @@ describe('Authentication', () => {
 
     expect(updateSpy).toHaveBeenCalledWith('access_token', id)
   })
+
+  test('Should throw an Error if UpdateAccessTokenRepository fails', async () => {
+    jest.spyOn(updateAccessTokenRepositoryStub, 'update').mockReturnValueOnce(Promise.reject(new Error()))
+    const { email, password } = fakeAccount
+    const promise = sut.auth({
+      email,
+      password
+    })
+
+    await expect(promise).rejects.toThrow()
+  })
 })
