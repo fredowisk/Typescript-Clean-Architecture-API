@@ -3,13 +3,14 @@ import { BcryptAdapter } from '@/infra/cryptography/bcrypt-adapter'
 
 jest.mock('bcrypt', () => ({
   hash: async (): Promise<string> => {
-    return await Promise.resolve('hashed_password')
+    return Promise.resolve('hashed_password')
   },
 
   compare: async (): Promise<boolean> => {
-    return await Promise.resolve(true)
+    return Promise.resolve(true)
   }
 }))
+
 const salt = 12
 const sut = new BcryptAdapter(salt)
 
@@ -26,11 +27,9 @@ describe('Bcrypt Adapter', () => {
   })
 
   test('Should throw an Error if Bcrypt throws an Error', async () => {
-    jest
-      .spyOn(bcrypt, 'hash')
-      .mockImplementation(() => {
-        throw new Error()
-      })
+    jest.spyOn(bcrypt, 'hash').mockImplementation(() => {
+      throw new Error()
+    })
     const promise = sut.hash('valid_password')
     await expect(promise).rejects.toThrow()
   })
@@ -44,5 +43,13 @@ describe('Bcrypt Adapter', () => {
   test('Should return true when compare succeeds', async () => {
     const isEqual = await sut.compare('valid_password', 'any_hash')
     expect(isEqual).toBeTruthy()
+  })
+
+  test('Should return false when compare fails', async () => {
+    jest.spyOn(bcrypt, 'compare').mockImplementationOnce(async () => {
+      return Promise.resolve(false)
+    })
+    const isEqual = await sut.compare('valid_password', 'any_hash')
+    expect(isEqual).toBeFalsy()
   })
 })
