@@ -93,4 +93,16 @@ describe('Authentication', () => {
     })
     await expect(promise).rejects.toThrow()
   })
+
+  test('Should return null HashComparer returns false', async () => {
+    jest.spyOn(hashComparerStub, 'compare').mockReturnValueOnce(Promise.resolve(false))
+
+    const { email, password } = fakeAccount
+    const acessToken = await sut.auth({
+      email,
+      password
+    })
+
+    expect(acessToken).toBeNull()
+  })
 })
