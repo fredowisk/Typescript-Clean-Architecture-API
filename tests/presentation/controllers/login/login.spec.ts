@@ -12,7 +12,7 @@ import {
   ok,
   serverError,
   unauthorized
-} from '@/presentation/helpers/http-helper'
+} from '@/presentation/helpers/http/http-helper'
 import { LoginController } from '@/presentation/controllers/login/login'
 
 describe('Login Controller', () => {
