@@ -1,7 +1,8 @@
 import { Authentication } from '@/application/usecases/authentication/authentication'
+import { AuthenticationModel } from '@/application/usecases/authentication/authentication-model'
 
 class UserAuthentication implements Authentication {
-  async auth (email: string, password: string): Promise<string> {
+  async auth (authentication: AuthenticationModel): Promise<string> {
     return 'access_token'
   }
 }

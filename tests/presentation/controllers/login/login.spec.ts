@@ -14,10 +14,11 @@ import {
   unauthorized
 } from '@/presentation/helpers/http/http-helper'
 import { LoginController } from '@/presentation/controllers/login/login'
+import { AuthenticationModel } from '@/application/usecases/authentication/authentication-model'
 
 describe('Login Controller', () => {
   class AuthenticationStub implements Authentication {
-    async auth (email: string, password: string): Promise<string> {
+    async auth (authentication: AuthenticationModel): Promise<string> {
       return Promise.resolve('access_token')
     }
   }
@@ -49,7 +50,7 @@ describe('Login Controller', () => {
     const httpRequest = makeHttpRequest()
     await sut.handle(httpRequest)
     const { email, password } = httpRequest.body
-    expect(authSpy).toHaveBeenCalledWith(email, password)
+    expect(authSpy).toHaveBeenCalledWith({ email, password })
   })
 
   test('Should return 401 if invalid credentials are provided', async () => {
