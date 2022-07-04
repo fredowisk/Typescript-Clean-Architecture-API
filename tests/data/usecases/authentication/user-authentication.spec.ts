@@ -127,4 +127,17 @@ describe('Authentication', () => {
 
     expect(generateSpy).toBeCalledWith(id)
   })
+
+  test('Should throw an Error TokenGenerator fails', async () => {
+    jest
+      .spyOn(tokenGeneratorStub, 'generate')
+      .mockReturnValueOnce(Promise.reject(new Error()))
+    const { email, password } = fakeAccount
+    const promise = sut.auth({
+      email,
+      password
+    })
+
+    await expect(promise).rejects.toThrow()
+  })
 })
