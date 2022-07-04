@@ -1,9 +1,11 @@
-import { Authentication } from '@/application/usecases/authentication/authentication'
-import { AuthenticationModel } from '@/application/usecases/authentication/authentication-model'
-import { HashComparer } from '@/data/protocols/criptography/hash-comparer'
-import { TokenGenerator } from '@/data/protocols/criptography/token-generator'
-import { LoadAccountByEmailRepository } from '@/data/protocols/db/load-account-by-email-repository'
-import { UpdateAccessTokenRepository } from '@/data/protocols/db/update-access-token-repository'
+import {
+  Authentication,
+  AuthenticationModel,
+  HashComparer,
+  TokenGenerator,
+  LoadAccountByEmailRepository,
+  UpdateAccessTokenRepository
+} from './user-authentication-protocols'
 
 class UserAuthentication implements Authentication {
   constructor (
