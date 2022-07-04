@@ -1,6 +1,6 @@
 import { Authentication } from '@/application/usecases/authentication/authentication'
 import { AuthenticationModel } from '@/application/usecases/authentication/authentication-model'
-import { LoadAccountByEmailRepository } from '@/data/protocols/load-account-by-email-repository'
+import { LoadAccountByEmailRepository } from '@/data/protocols/db/load-account-by-email-repository'
 
 class UserAuthentication implements Authentication {
   constructor (
