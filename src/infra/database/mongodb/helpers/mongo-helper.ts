@@ -1,3 +1,4 @@
+import { AccountModel } from '@/domain/models/account'
 import { Collection, MongoClient } from 'mongodb'
 
 const MongoHelper = {
@@ -21,6 +22,11 @@ const MongoHelper = {
   async clear (name: string): Promise<void> {
     const collection = await this.getCollection(name)
     collection.deleteMany({})
+  },
+
+  map (data: any): AccountModel {
+    const { _id, ...rest } = data
+    return { ...rest, id: _id }
   }
 }
 
