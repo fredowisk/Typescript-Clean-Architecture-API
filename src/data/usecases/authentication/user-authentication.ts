@@ -16,7 +16,7 @@ class UserAuthentication implements Authentication {
   ) {}
 
   async auth (authentication: AuthenticationModel): Promise<string> {
-    const user = await this.loadAccountByEmailRepository.load(
+    const user = await this.loadAccountByEmailRepository.loadByEmail(
       authentication.email
     )
 

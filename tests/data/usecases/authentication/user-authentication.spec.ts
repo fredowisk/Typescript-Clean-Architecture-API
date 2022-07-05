@@ -15,7 +15,7 @@ describe('Authentication', () => {
 
   class LoadAccountByEmailRepositoryStub
   implements LoadAccountByEmailRepository {
-    async load (email: string): Promise<AccountModel> {
+    async loadByEmail (email: string): Promise<AccountModel> {
       return Promise.resolve(fakeAccount)
     }
   }
@@ -51,7 +51,7 @@ describe('Authentication', () => {
   )
 
   test('Should call LoadAccountByEmailRepository with correct email', async () => {
-    const loadSpy = jest.spyOn(loadAccountByEmailRepositoryStub, 'load')
+    const loadSpy = jest.spyOn(loadAccountByEmailRepositoryStub, 'loadByEmail')
     const { email, password } = fakeAccount
     await sut.auth({
       email,
@@ -62,7 +62,7 @@ describe('Authentication', () => {
 
   test('Should throw an error if LoadAccountByEmailRepository fails', async () => {
     jest
-      .spyOn(loadAccountByEmailRepositoryStub, 'load')
+      .spyOn(loadAccountByEmailRepositoryStub, 'loadByEmail')
       .mockReturnValueOnce(Promise.reject(new Error()))
 
     const { email, password } = fakeAccount
@@ -75,7 +75,7 @@ describe('Authentication', () => {
 
   test('Should return null if LoadAccountByEmailRepository return null', async () => {
     jest
-      .spyOn(loadAccountByEmailRepositoryStub, 'load')
+      .spyOn(loadAccountByEmailRepositoryStub, 'loadByEmail')
       .mockReturnValueOnce(null)
 
     const { email, password } = fakeAccount
