@@ -5,7 +5,7 @@ import { Controller } from '@/presentation/protocols/controller'
 import { loginValidation } from './login-validation-factory'
 
 export const makeLoginController = (): Controller => {
-  const loadAccountByEmailRepository = new LoadAccountByEmailRepository()
+  const loadAccountByEmailRepository = Account
   const hashComparer = new HashComparer()
   const encrypterGenerator = new JwtAdapter('secret')
   const updateAccessTokenRepository = new UpdateAccessTokenRepository()
