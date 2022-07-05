@@ -31,7 +31,7 @@ class UserAuthentication implements Authentication {
 
     const accessToken = await this.encrypter.encrypt(user.id)
 
-    await this.updateAccessTokenRepository.update(accessToken, user.id)
+    await this.updateAccessTokenRepository.updateAccessToken(accessToken, user.id)
 
     return accessToken
   }

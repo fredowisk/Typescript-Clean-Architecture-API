@@ -33,7 +33,7 @@ describe('Authentication', () => {
   }
 
   class UpdateAccessTokenRepositoryStub implements UpdateAccessTokenRepository {
-    async update (token: string, id: string): Promise<void> {
+    async updateAccessToken (token: string, id: string): Promise<void> {
       return Promise.resolve()
     }
   }
@@ -161,7 +161,7 @@ describe('Authentication', () => {
   })
 
   test('Should call UpdateAccessTokenRepository with correct values', async () => {
-    const updateSpy = jest.spyOn(updateAccessTokenRepositoryStub, 'update')
+    const updateSpy = jest.spyOn(updateAccessTokenRepositoryStub, 'updateAccessToken')
     const { id, email, password } = fakeAccount
     await sut.auth({
       email,
@@ -172,7 +172,7 @@ describe('Authentication', () => {
   })
 
   test('Should throw an Error if UpdateAccessTokenRepository fails', async () => {
-    jest.spyOn(updateAccessTokenRepositoryStub, 'update').mockReturnValueOnce(Promise.reject(new Error()))
+    jest.spyOn(updateAccessTokenRepositoryStub, 'updateAccessToken').mockReturnValueOnce(Promise.reject(new Error()))
     const { email, password } = fakeAccount
     const promise = sut.auth({
       email,

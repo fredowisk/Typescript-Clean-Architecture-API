@@ -1,5 +1,5 @@
 interface UpdateAccessTokenRepository {
-  update: (token: string, id: string) => Promise<void>
+  updateAccessToken: (token: string, id: string) => Promise<void>
 }
 
 export { UpdateAccessTokenRepository }
