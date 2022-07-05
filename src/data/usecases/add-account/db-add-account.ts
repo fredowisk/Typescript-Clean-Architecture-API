@@ -7,8 +7,8 @@ import {
 
 class DbAddAccount implements AddAccount {
   constructor (
-    readonly hasher: Hasher,
-    readonly addAccountRepository: AddAccountRepository
+    private readonly hasher: Hasher,
+    private readonly addAccountRepository: AddAccountRepository
   ) {}
 
   async add (account: AddAccountModel): Promise<void> {

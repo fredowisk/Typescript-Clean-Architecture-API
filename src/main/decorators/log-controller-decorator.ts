@@ -7,8 +7,8 @@ import {
 
 class LogControllerDecorator implements Controller {
   constructor (
-    readonly controller: Controller,
-    readonly logErrorRepository: LogErrorRepository
+    private readonly controller: Controller,
+    private readonly logErrorRepository: LogErrorRepository
   ) {}
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
