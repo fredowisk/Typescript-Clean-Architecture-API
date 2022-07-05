@@ -40,4 +40,11 @@ describe('Account Mongo Repository', () => {
     expect(account).toBeTruthy()
     expect(account.id).toBeTruthy()
   })
+
+  test('Should return null if loadByEmail returns null', async () => {
+    const { email } = fakeAccount
+    const account = await sut.loadByEmail(email)
+
+    expect(account).toBeFalsy()
+  })
 })
