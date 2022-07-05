@@ -1,8 +1,8 @@
 import { MongoHelper } from '@/infra/database/mongodb/helpers/mongo-helper'
 import request from 'supertest'
 import app from '@/main/config/app'
+import env from '@/main/config/env'
 import { hash } from 'bcrypt'
-import env from '../config/env'
 
 describe('Account Routes', () => {
   beforeAll(async () => {
@@ -32,13 +32,17 @@ describe('Account Routes', () => {
 
   describe('POST /login', () => {
     test('Should return 200 on login ', async () => {
-      const password = await hash('123', env.salt)
+      const { name, email, password: oldPassword } = fakeAccount
+      const password = await hash(oldPassword, env.salt)
       const accountCollection = await MongoHelper.getCollection('accounts')
-      const { name, email } = fakeAccount
-      await accountCollection.insertOne({ name, email, password })
+      await accountCollection.insertOne({
+        name,
+        email,
+        password
+      })
       await request(app)
         .post('/api/login')
-        .send({ email, password })
+        .send({ email, password: oldPassword })
         .expect(200)
     })
 

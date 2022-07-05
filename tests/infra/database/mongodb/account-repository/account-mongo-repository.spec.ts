@@ -31,12 +31,12 @@ describe('Account Mongo Repository', () => {
   })
 
   test('Should return an account if loadByEmail succeeds', async () => {
-    const spyAccountRepository = jest.spyOn(sut, 'add')
+    const spyLoadRepository = jest.spyOn(sut, 'loadByEmail')
     await sut.add(fakeAccount)
     const { email } = fakeAccount
     const account = await sut.loadByEmail(email)
 
-    expect(spyAccountRepository).toHaveBeenCalledWith(email)
+    expect(spyLoadRepository).toHaveBeenCalledWith(email)
     expect(account).toBeTruthy()
     expect(account.id).toBeTruthy()
   })
@@ -54,9 +54,9 @@ describe('Account Mongo Repository', () => {
     const account = await sut.loadByEmail(email)
     expect(account.accessToken).toBeFalsy()
 
-    await sut.updateAccessToken(account.id, 'any_token')
-
-    expect(account).toBeTruthy()
-    expect(account.accessToken).toBe('any_token')
+    await sut.updateAccessToken('any_token', account.id)
+    const newAccount = await sut.loadByEmail(email)
+    expect(newAccount).toBeTruthy()
+    expect(newAccount.accessToken).toBe('any_token')
   })
 })

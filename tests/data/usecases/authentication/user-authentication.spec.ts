@@ -34,7 +34,7 @@ describe('Authentication', () => {
 
   class UpdateAccessTokenRepositoryStub implements UpdateAccessTokenRepository {
     async updateAccessToken (token: string, id: string): Promise<void> {
-      return Promise.resolve()
+      return Promise.resolve(null)
     }
   }
 
@@ -79,12 +79,12 @@ describe('Authentication', () => {
       .mockReturnValueOnce(null)
 
     const { email, password } = fakeAccount
-    const accessToken = sut.auth({
+    const accessToken = await sut.auth({
       email,
       password
     })
 
-    expect(accessToken).toBeNull()
+    expect(accessToken).toBe(null)
   })
 
   test('Should call HashComparer with correct values', async () => {
@@ -96,7 +96,7 @@ describe('Authentication', () => {
       password
     })
 
-    expect(compareSpy).toHaveBeenCalledWith(password, 'hashed_password')
+    expect(compareSpy).toHaveBeenCalledWith(password, '123')
   })
 
   test('Should throw an error if HashComparer fails', async () => {
@@ -157,7 +157,7 @@ describe('Authentication', () => {
       password
     })
 
-    expect(accessToken).toBe('access_token')
+    expect(accessToken).toBe('hashed_id')
   })
 
   test('Should call UpdateAccessTokenRepository with correct values', async () => {
@@ -168,7 +168,7 @@ describe('Authentication', () => {
       password
     })
 
-    expect(updateSpy).toHaveBeenCalledWith('access_token', id)
+    expect(updateSpy).toHaveBeenCalledWith('hashed_id', id)
   })
 
   test('Should throw an Error if UpdateAccessTokenRepository fails', async () => {

@@ -25,8 +25,14 @@ implements
   async updateAccessToken (token: string, id: string): Promise<void> {
     const accountCollection = await MongoHelper.getCollection('accounts')
     await accountCollection.updateOne(
-      { _id: id },
-      { $set: { accessToken: token } }
+      {
+        _id: id
+      },
+      {
+        $set: {
+          accessToken: token
+        }
+      }
     )
   }
 }
