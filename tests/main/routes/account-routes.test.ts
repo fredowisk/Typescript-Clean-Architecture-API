@@ -36,7 +36,18 @@ describe('Account Routes', () => {
       const accountCollection = await MongoHelper.getCollection('accounts')
       const { name, email } = fakeAccount
       await accountCollection.insertOne({ name, email, password })
-      await request(app).post('/api/login').send({ email, password })
+      await request(app)
+        .post('/api/login')
+        .send({ email, password })
+        .expect(200)
+    })
+
+    test('Should return 401 login return bad request', async () => {
+      const { email, password } = fakeAccount
+      await request(app)
+        .post('/api/login')
+        .send({ email, password })
+        .expect(401)
     })
   })
 })
