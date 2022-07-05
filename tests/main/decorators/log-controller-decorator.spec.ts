@@ -1,11 +1,11 @@
-import { LogErrorRepository } from '@/data/protocols/db/log-error-repository'
+import { LogErrorRepository } from '@/data/protocols/db/log-repository/log-error-repository'
 import { ok, serverError } from '@/presentation/helpers/http/http-helper'
 import {
   Controller,
   HttpRequest,
   HttpResponse
 } from '@/presentation/protocols/'
-import { LogControllerDecorator } from '@/main/decorators/log'
+import { LogControllerDecorator } from '@/main/decorators/log-controller-decorator'
 
 class ControllerStub implements Controller {
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {

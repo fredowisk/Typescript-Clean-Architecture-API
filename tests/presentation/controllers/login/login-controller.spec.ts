@@ -2,7 +2,7 @@ import {
   Authentication,
   HttpRequest,
   Validation
-} from '@/presentation/controllers/login/login-protocols'
+} from '@/presentation/controllers/login/login-protocols-controller'
 import {
   InvalidParamError,
   ServerError
@@ -13,7 +13,7 @@ import {
   serverError,
   unauthorized
 } from '@/presentation/helpers/http/http-helper'
-import { LoginController } from '@/presentation/controllers/login/login'
+import { LoginController } from '@/presentation/controllers/login/login-controller'
 import { AuthenticationModel } from '@/application/usecases/authentication/authentication-model'
 
 describe('Login Controller', () => {

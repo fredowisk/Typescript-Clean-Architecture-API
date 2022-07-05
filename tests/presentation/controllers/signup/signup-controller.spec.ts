@@ -1,10 +1,10 @@
-import SignUpController from '@/presentation/controllers/signup/signup'
+import SignUpController from '@/presentation/controllers/signup/signup-controller'
 import {
   AddAccount,
   AddAccountModel,
   HttpRequest,
   Validation
-} from '@/presentation/controllers/signup/signup-protocols'
+} from '@/presentation/controllers/signup/signup-protocols-controller'
 import {
   ServerError
 } from '@/presentation/errors'
