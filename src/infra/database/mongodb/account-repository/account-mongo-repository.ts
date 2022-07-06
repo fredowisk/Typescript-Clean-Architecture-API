@@ -13,7 +13,8 @@ implements
   async add (account: AddAccountModel): Promise<void> {
     const accountData = { ...account }
     const accountCollection = await MongoHelper.getCollection('accounts')
-    await accountCollection.insertOne(accountData)
+    const newAccount = await accountCollection.insertOne(accountData)
+    if (!newAccount) return null
   }
 
   async loadByEmail (email: string): Promise<AccountModel> {
