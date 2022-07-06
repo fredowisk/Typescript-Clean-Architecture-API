@@ -1,6 +1,6 @@
 import { AddSurveyController } from '@/presentation/controllers/survey/add-survey/add-survey-controller'
 import { HttpRequest } from '@/presentation/protocols/http'
-import { badRequest, serverError } from '@/presentation/helpers/http/http-helper'
+import { badRequest, noContent, serverError } from '@/presentation/helpers/http/http-helper'
 import { Validation } from '@/presentation/protocols/validation'
 import { AddSurvey } from '@/application/usecases/add-survey/add-survey'
 import { AddSurveyModel } from '@/application/usecases/add-survey/add-survey-model'
@@ -60,5 +60,11 @@ describe('Add Survey Controller', () => {
     const httpResponse = await sut.handle(httpRequest)
 
     expect(httpResponse).toEqual(serverError(new Error()))
+  })
+
+  test('Should return 204 on success', async () => {
+    const httpResponse = await sut.handle(httpRequest)
+
+    expect(httpResponse).toEqual(noContent())
   })
 })
