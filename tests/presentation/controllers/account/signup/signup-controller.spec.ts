@@ -1,4 +1,4 @@
-import SignUpController from '@/presentation/controllers/signup/signup-controller'
+import SignUpController from '@/presentation/controllers/account/signup/signup-controller'
 import {
   AddAccount,
   AddAccountModel,
@@ -6,7 +6,7 @@ import {
   Validation,
   Authentication,
   AuthenticationModel
-} from '@/presentation/controllers/signup/signup-controller-protocols'
+} from '@/presentation/controllers/account/signup/signup-controller-protocols'
 import { EmailInUseError, ServerError } from '@/presentation/errors'
 import {
   badRequest,

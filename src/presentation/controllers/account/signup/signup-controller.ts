@@ -1,5 +1,5 @@
 import { EmailInUseError } from '@/presentation/errors/email-in-use-error'
-import { badRequest, forbidden, ok, serverError } from '../../helpers/http/http-helper'
+import { badRequest, forbidden, ok, serverError } from '../../../helpers/http/http-helper'
 import {
   Controller,
   HttpRequest,

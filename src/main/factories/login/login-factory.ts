@@ -1,7 +1,7 @@
 import { UserAuthentication } from '@/data/usecases/authentication/user-authentication'
 import { JwtAdapter } from '@/infra/cryptography/jwt-adapter/jwt-adapter'
 import { LogControllerDecorator } from '@/main/decorators/log-controller-decorator'
-import { LoginController } from '@/presentation/controllers/login/login-controller'
+import { LoginController } from '@/presentation/controllers/account/login/login-controller'
 import { Controller } from '@/presentation/protocols/controller'
 import { loginValidation } from './login-validation-factory'
 import { ErrorMongoRepository } from '@/infra/database/mongodb/log-repository/log-mongo-repository'
