@@ -1,6 +1,6 @@
 import {
   badRequest,
-  ok,
+  noContent,
   serverError
 } from '@/presentation/helpers/http/http-helper'
 import {
@@ -26,7 +26,7 @@ class AddSurveyController implements Controller {
 
       await this.addSurvey.add({ question, answers })
 
-      return Promise.resolve(ok())
+      return noContent()
     } catch (error) {
       return serverError(error)
     }
