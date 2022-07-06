@@ -3,16 +3,17 @@ import {
   AddAccount,
   AddAccountModel,
   HttpRequest,
-  Validation
+  Validation,
+  Authentication,
+  AuthenticationModel
 } from '@/presentation/controllers/signup/signup-protocols-controller'
-import { ServerError } from '@/presentation/errors'
+import { EmailInUseError, ServerError } from '@/presentation/errors'
 import {
   badRequest,
+  forbidden,
   ok,
   serverError
 } from '@/presentation/helpers/http/http-helper'
-import { Authentication } from '@/application/usecases/authentication/authentication'
-import { AuthenticationModel } from 'application/usecases/authentication/authentication-model'
 
 interface SutTypes {
   sut: SignUpController
@@ -47,19 +48,24 @@ const makeAuthentication = (): Authentication => {
   return new AuthenticationStub()
 }
 
-const { sut, addAccountStub, validationStub, authenticationStub } = ((): SutTypes => {
-  const addAccountStub = makeAddAccount()
-  const validationStub = makeValidation()
-  const authenticationStub = makeAuthentication()
+const { sut, addAccountStub, validationStub, authenticationStub } =
+  ((): SutTypes => {
+    const addAccountStub = makeAddAccount()
+    const validationStub = makeValidation()
+    const authenticationStub = makeAuthentication()
 
-  const sut = new SignUpController(addAccountStub, validationStub, authenticationStub)
-  return {
-    sut,
-    addAccountStub,
-    validationStub,
-    authenticationStub
-  }
-})()
+    const sut = new SignUpController(
+      addAccountStub,
+      validationStub,
+      authenticationStub
+    )
+    return {
+      sut,
+      addAccountStub,
+      validationStub,
+      authenticationStub
+    }
+  })()
 
 const makeHttpRequest = (property?: string): HttpRequest => {
   const httpRequest: HttpRequest = {
@@ -93,6 +99,17 @@ describe('SignUp Controller', () => {
     await sut.handle(httpRequest)
     delete httpRequest.body.passwordConfirmation
     expect(addAccountSpy).toHaveBeenCalledWith(httpRequest.body)
+  })
+
+  test('Should return 403 if AddAccount returns null', async () => {
+    jest
+      .spyOn(addAccountStub, 'add')
+      .mockReturnValueOnce(Promise.resolve(null))
+
+    const httpRequest = makeHttpRequest()
+
+    const httpResponse = await sut.handle(httpRequest)
+    expect(httpResponse).toEqual(forbidden(new EmailInUseError()))
   })
 
   test('Should return 200 if account is created successfully', async () => {
