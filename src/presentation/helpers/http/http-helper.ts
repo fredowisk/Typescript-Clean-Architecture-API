@@ -29,10 +29,10 @@ const serverError = (error: Error): HttpResponse => {
   }
 }
 
-const ok = (data?: any): HttpResponse => {
+const ok = (data: any): HttpResponse => {
   return {
     statusCode: 200,
-    body: data ?? {}
+    body: data
   }
 }
 
