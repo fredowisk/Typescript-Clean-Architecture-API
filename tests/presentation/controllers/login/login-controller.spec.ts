@@ -2,7 +2,7 @@ import {
   Authentication,
   HttpRequest,
   Validation
-} from '@/presentation/controllers/login/login-protocols-controller'
+} from '@/presentation/controllers/login/login-controller-protocols'
 import {
   InvalidParamError,
   ServerError

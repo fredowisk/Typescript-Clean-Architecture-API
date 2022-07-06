@@ -6,7 +6,7 @@ import {
   Validation,
   Authentication,
   AuthenticationModel
-} from '@/presentation/controllers/signup/signup-protocols-controller'
+} from '@/presentation/controllers/signup/signup-controller-protocols'
 import { EmailInUseError, ServerError } from '@/presentation/errors'
 import {
   badRequest,

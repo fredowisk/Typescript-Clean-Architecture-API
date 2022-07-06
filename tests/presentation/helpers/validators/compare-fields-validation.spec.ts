@@ -1,5 +1,5 @@
 import { InvalidParamError } from '@/presentation/errors'
-import { CompareFieldsValidation } from '@/presentation/helpers/validators/compare-fields-validation'
+import { CompareFieldsValidation } from '@/validation/validators/compare-fields-validation'
 
 describe('Compare Fields Validation', () => {
   const sut = new CompareFieldsValidation('field', 'fieldToCompare')

@@ -7,7 +7,7 @@ import {
   AddAccount,
   Validation,
   Authentication
-} from './signup-protocols-controller'
+} from './signup-controller-protocols'
 
 class SignUpController implements Controller {
   constructor (

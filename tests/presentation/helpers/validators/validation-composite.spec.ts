@@ -1,6 +1,6 @@
 import { InvalidParamError } from '@/presentation/errors'
 import { Validation } from '@/presentation/protocols/validation'
-import { ValidationComposite } from '@/presentation/helpers/validators/validation-composite'
+import { ValidationComposite } from '@/validation/validators/validation-composite'
 
 describe('Validation Composite', () => {
   class ValidationStub implements Validation {
