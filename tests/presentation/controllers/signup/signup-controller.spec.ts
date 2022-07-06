@@ -5,19 +5,20 @@ import {
   HttpRequest,
   Validation
 } from '@/presentation/controllers/signup/signup-protocols-controller'
-import {
-  ServerError
-} from '@/presentation/errors'
+import { ServerError } from '@/presentation/errors'
 import {
   badRequest,
   ok,
   serverError
 } from '@/presentation/helpers/http/http-helper'
+import { Authentication } from '@/application/usecases/authentication/authentication'
+import { AuthenticationModel } from 'application/usecases/authentication/authentication-model'
 
 interface SutTypes {
   sut: SignUpController
   addAccountStub: AddAccount
   validationStub: Validation
+  authenticationStub: Authentication
 }
 
 const makeAddAccount = (): AddAccount => {
@@ -37,21 +38,28 @@ const makeValidation = (): Validation => {
   return new ValidationStub()
 }
 
-const { sut, addAccountStub, validationStub } =
-  ((): SutTypes => {
-    const addAccountStub = makeAddAccount()
-    const validationStub = makeValidation()
-
-    const sut = new SignUpController(
-      addAccountStub,
-      validationStub
-    )
-    return {
-      sut,
-      addAccountStub,
-      validationStub
+const makeAuthentication = (): Authentication => {
+  class AuthenticationStub implements Authentication {
+    async auth (authentication: AuthenticationModel): Promise<string> {
+      return Promise.resolve('access_token')
     }
-  })()
+  }
+  return new AuthenticationStub()
+}
+
+const { sut, addAccountStub, validationStub, authenticationStub } = ((): SutTypes => {
+  const addAccountStub = makeAddAccount()
+  const validationStub = makeValidation()
+  const authenticationStub = makeAuthentication()
+
+  const sut = new SignUpController(addAccountStub, validationStub, authenticationStub)
+  return {
+    sut,
+    addAccountStub,
+    validationStub,
+    authenticationStub
+  }
+})()
 
 const makeHttpRequest = (property?: string): HttpRequest => {
   const httpRequest: HttpRequest = {
@@ -109,5 +117,13 @@ describe('SignUp Controller', () => {
 
     const httpResponse = await sut.handle(httpRequest)
     expect(httpResponse).toEqual(badRequest(new Error()))
+  })
+
+  test('Should call Authentication with correct values', async () => {
+    const authSpy = jest.spyOn(authenticationStub, 'auth')
+    const httpRequest = makeHttpRequest()
+    await sut.handle(httpRequest)
+    const { email, password } = httpRequest.body
+    expect(authSpy).toHaveBeenCalledWith({ email, password })
   })
 })
