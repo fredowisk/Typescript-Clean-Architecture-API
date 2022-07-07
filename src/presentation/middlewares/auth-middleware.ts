@@ -1,0 +1,11 @@
+import { AccessDeniedError } from '../errors'
+import { forbidden } from '../helpers/http/http-helper'
+import { HttpRequest, HttpResponse, Middleware } from '../protocols'
+
+class AuthMiddleware implements Middleware {
+  async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
+    return Promise.resolve(forbidden(new AccessDeniedError()))
+  }
+}
+
+export { AuthMiddleware }
