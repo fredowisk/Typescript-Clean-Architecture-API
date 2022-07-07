@@ -22,11 +22,11 @@ describe('Auth Middleware', () => {
   const loadAccountByTokenStub = new LoadAccountByTokenStub()
   const sut = new AuthMiddleware(loadAccountByTokenStub)
 
-  test('Should return 403 if there is no x-access-token in headers', async () => {
-    const httpRequest: HttpRequest = {
-      headers: {}
-    }
+  const httpRequest: HttpRequest = {
+    headers: {}
+  }
 
+  test('Should return 403 if there is no x-access-token in headers', async () => {
     const httpResponse = await sut.handle(httpRequest)
 
     expect(httpResponse).toEqual(forbidden(new AccessDeniedError()))
@@ -35,10 +35,8 @@ describe('Auth Middleware', () => {
   test('Should call LoadAccountByToken with correct accessToken', async () => {
     const loadAccountSpy = jest.spyOn(loadAccountByTokenStub, 'load')
 
-    const httpRequest: HttpRequest = {
-      headers: {
-        'x-access-token': 'any_token'
-      }
+    httpRequest.headers = {
+      'x-access-token': 'any_token'
     }
 
     await sut.handle(httpRequest)
@@ -46,5 +44,15 @@ describe('Auth Middleware', () => {
     expect(loadAccountSpy).toHaveBeenCalledWith(
       httpRequest.headers['x-access-token']
     )
+  })
+
+  test('Should return 403 if LoadAccountByToken returns null', async () => {
+    jest
+      .spyOn(loadAccountByTokenStub, 'load')
+      .mockReturnValueOnce(Promise.resolve(null))
+
+    const httpResponse = await sut.handle(httpRequest)
+
+    expect(httpResponse).toEqual(forbidden(new AccessDeniedError()))
   })
 })

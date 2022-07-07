@@ -13,7 +13,9 @@ class AuthMiddleware implements Middleware {
       return forbidden(new AccessDeniedError())
     }
 
-    await this.loadAccountByToken.load(accessToken)
+    const user = await this.loadAccountByToken.load(accessToken)
+
+    if (!user) return forbidden(new AccessDeniedError())
   }
 }
 
