@@ -1,5 +1,5 @@
 import { LogErrorRepository } from '@/data/protocols/db/log-repository/log-error-repository'
-import { ok, serverError } from '@/presentation/helpers/http/http-helper'
+import { noContent, serverError } from '@/presentation/helpers/http/http-helper'
 import {
   Controller,
   HttpRequest,
@@ -10,8 +10,8 @@ import { LogControllerDecorator } from '@/main/decorators/log-controller-decorat
 class ControllerStub implements Controller {
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     const httpResponse: HttpResponse = {
-      statusCode: 200,
-      body: {}
+      statusCode: 204,
+      body: null
     }
     return Promise.resolve(httpResponse)
   }
@@ -45,7 +45,7 @@ describe('Log Controller Decorator', () => {
 
   test('Should return the same result of the controller', async () => {
     const httpResponse = await sut.handle(httpRequest)
-    expect(httpResponse).toEqual(ok())
+    expect(httpResponse).toEqual(noContent())
   })
 
   test('Should call LogErrorRepository if controller returns a server error', async () => {
