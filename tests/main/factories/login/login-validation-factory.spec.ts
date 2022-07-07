@@ -1,4 +1,4 @@
-import { loginValidation } from '@/main/factories/login/login-validation-factory'
+import { loginValidation } from '@/main/factories/account/login/login-validation-factory'
 import { RequiredFieldValidation } from '@/validation/validators/required-field-validation'
 import { Validation } from '@/presentation/protocols/validation'
 import { ValidationComposite } from '@/validation/validators/validation-composite'

@@ -4,7 +4,7 @@ import { AccountMongoRepository } from '@/infra/database/mongodb/account-reposit
 import { ErrorMongoRepository } from '@/infra/database/mongodb/log-repository/log-mongo-repository'
 import { Controller } from '@/presentation/protocols'
 import SignUpController from '@/presentation/controllers/account/signup/signup-controller'
-import { LogControllerDecorator } from '../../decorators/log-controller-decorator'
+import { LogControllerDecorator } from '../../../decorators/log-controller-decorator'
 import { signUpValidation } from './signup-validation-factory'
 import env from '@/main/config/env'
 import { JwtAdapter } from '@/infra/cryptography/jwt-adapter/jwt-adapter'
