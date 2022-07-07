@@ -23,7 +23,7 @@ const accountData = {
   password: 'valid_password'
 }
 
-describe('DbAddAccount Usecase', () => {
+describe('DbAddAccount Use case', () => {
   test('Should call Hasher with correct password', async () => {
     const hashSpy = jest.spyOn(hasherStub, 'hash')
 
