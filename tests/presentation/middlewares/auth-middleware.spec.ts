@@ -23,8 +23,9 @@ describe('Auth Middleware', () => {
     }
   }
 
+  const role = 'any_role'
   const loadAccountByTokenStub = new LoadAccountByTokenStub()
-  const sut = new AuthMiddleware(loadAccountByTokenStub)
+  const sut = new AuthMiddleware(loadAccountByTokenStub, role)
 
   const httpRequest: HttpRequest = {
     headers: {}
@@ -46,7 +47,8 @@ describe('Auth Middleware', () => {
     await sut.handle(httpRequest)
 
     expect(loadAccountSpy).toHaveBeenCalledWith(
-      httpRequest.headers['x-access-token']
+      httpRequest.headers['x-access-token'],
+      role
     )
   })
 
