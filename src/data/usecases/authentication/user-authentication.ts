@@ -29,7 +29,7 @@ class UserAuthentication implements Authentication {
 
     if (!isEqual) return null
 
-    const accessToken = await this.encrypter.encrypt(user.id)
+    const accessToken = this.encrypter.encrypt(user.id)
 
     await this.updateAccessTokenRepository.updateAccessToken(accessToken, user.id)
 

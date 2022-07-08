@@ -27,8 +27,8 @@ describe('Authentication', () => {
   }
 
   class EncrypterStub implements Encrypter {
-    async encrypt (id: string): Promise<string> {
-      return Promise.resolve('hashed_id')
+    encrypt (id: string): string {
+      return 'hashed_id'
     }
   }
 
@@ -140,7 +140,7 @@ describe('Authentication', () => {
   test('Should throw an Error Encrypter fails', async () => {
     jest
       .spyOn(encrypterStub, 'encrypt')
-      .mockReturnValueOnce(Promise.reject(new Error()))
+      .mockImplementationOnce(() => { throw new Error() })
     const { email, password } = fakeAccount
     const promise = sut.auth({
       email,
