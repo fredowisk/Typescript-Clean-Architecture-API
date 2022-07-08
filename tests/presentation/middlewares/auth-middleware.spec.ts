@@ -13,7 +13,7 @@ describe('Auth Middleware', () => {
   const fakeAccount: AccountModel = {
     id: 'valid_id',
     name: 'valid_name',
-    email: 'valid_email',
+    email: 'valid_email@mail.com',
     password: 'hashed_password'
   }
 

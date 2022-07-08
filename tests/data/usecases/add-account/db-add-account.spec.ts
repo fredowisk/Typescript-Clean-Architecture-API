@@ -19,7 +19,7 @@ const sut = new DbAddAccount(hasherStub, addAccountRepositoryStub)
 
 const accountData = {
   name: 'valid_name',
-  email: 'valid_email',
+  email: 'valid_email@mail.com',
   password: 'valid_password'
 }
 
