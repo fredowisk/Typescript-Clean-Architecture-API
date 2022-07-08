@@ -18,14 +18,14 @@ describe('Jwt Adapter', () => {
   const token = 'any_token'
 
   describe('sign()', () => {
-    test('Should call sign with correct values', async () => {
+    test('Should call sign with correct values', () => {
       const signSpy = jest.spyOn(jwt, 'sign')
       sut.encrypt(id)
 
       expect(signSpy).toHaveBeenCalledWith({ id }, env.jwtSecret)
     })
 
-    test('Should return a token if sign succeeds', async () => {
+    test('Should return a token if sign succeeds', () => {
       const accessToken = sut.encrypt(id)
 
       expect(accessToken).toBe('token')
@@ -40,17 +40,25 @@ describe('Jwt Adapter', () => {
   })
 
   describe('verify()', () => {
-    test('Should call verify with correct values', async () => {
+    test('Should call verify with correct values', () => {
       const verifySpy = jest.spyOn(jwt, 'verify')
       sut.decrypt(token)
 
       expect(verifySpy).toHaveBeenCalledWith(token, env.jwtSecret)
     })
 
-    test('Should return a value if verify succeeds', async () => {
+    test('Should return a value if verify succeeds', () => {
       const decryptedToken = sut.decrypt(token)
 
       expect(decryptedToken).toBe('any_value')
+    })
+
+    test('Should throw an Error if verify throws an Error', () => {
+      jest.spyOn(jwt, 'verify').mockImplementationOnce(() => {
+        throw new Error()
+      })
+
+      expect(() => sut.decrypt(token)).toThrow()
     })
   })
 })
