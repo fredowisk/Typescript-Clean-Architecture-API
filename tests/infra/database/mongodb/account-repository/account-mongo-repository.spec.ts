@@ -34,12 +34,12 @@ describe('Account Mongo Repository', () => {
 
   describe('loadByEmail()', () => {
     test('Should return an account if loadByEmail succeeds', async () => {
-      const spyLoadRepository = jest.spyOn(sut, 'loadByEmail')
+      const spyLoadByEmailRepository = jest.spyOn(sut, 'loadByEmail')
       await sut.add(fakeAccount)
       const { email } = fakeAccount
       const account = await sut.loadByEmail(email)
 
-      expect(spyLoadRepository).toHaveBeenCalledWith(email)
+      expect(spyLoadByEmailRepository).toHaveBeenCalledWith(email)
       expect(account).toBeTruthy()
       expect(account.id).toBeTruthy()
     })
@@ -47,6 +47,41 @@ describe('Account Mongo Repository', () => {
     test('Should return null if loadByEmail returns null', async () => {
       const { email } = fakeAccount
       const account = await sut.loadByEmail(email)
+
+      expect(account).toBeFalsy()
+    })
+  })
+
+  describe('loadByToken()', () => {
+    const accessToken = 'any_token'
+
+    test('Should call loadByToken without role and return an account', async () => {
+      const spyLoadByTokenRepository = jest.spyOn(sut, 'loadByToken')
+
+      const accountCollection = await MongoHelper.getCollection('accounts')
+      await accountCollection.insertOne({ ...fakeAccount, accessToken })
+      const account = await sut.loadByToken(accessToken)
+
+      expect(spyLoadByTokenRepository).toHaveBeenCalledWith(accessToken)
+      expect(account).toBeTruthy()
+      expect(account.id).toBeTruthy()
+    })
+
+    test('Should call loadByToken with role and return an account', async () => {
+      const role = 'any_role'
+      const spyLoadByTokenRepository = jest.spyOn(sut, 'loadByToken')
+
+      const accountCollection = await MongoHelper.getCollection('accounts')
+      await accountCollection.insertOne({ ...fakeAccount, accessToken, role })
+      const account = await sut.loadByToken(accessToken, role)
+
+      expect(spyLoadByTokenRepository).toHaveBeenCalledWith(accessToken, role)
+      expect(account).toBeTruthy()
+      expect(account.id).toBeTruthy()
+    })
+
+    test('Should return null if loadByToken returns null', async () => {
+      const account = await sut.loadByToken(accessToken)
 
       expect(account).toBeFalsy()
     })
