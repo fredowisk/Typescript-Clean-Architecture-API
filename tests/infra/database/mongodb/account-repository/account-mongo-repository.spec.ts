@@ -22,41 +22,47 @@ describe('Account Mongo Repository', () => {
     password: 'any_password'
   }
 
-  test('Should return nothing if add succeeds', async () => {
-    const spyAccountRepository = jest.spyOn(sut, 'add')
-    const account = await sut.add(fakeAccount)
+  describe('add()', () => {
+    test('Should return nothing if add succeeds', async () => {
+      const spyAccountRepository = jest.spyOn(sut, 'add')
+      const account = await sut.add(fakeAccount)
 
-    expect(spyAccountRepository).toHaveBeenCalledWith(fakeAccount)
-    expect(account).toBeFalsy()
+      expect(spyAccountRepository).toHaveBeenCalledWith(fakeAccount)
+      expect(account).toBeFalsy()
+    })
   })
 
-  test('Should return an account if loadByEmail succeeds', async () => {
-    const spyLoadRepository = jest.spyOn(sut, 'loadByEmail')
-    await sut.add(fakeAccount)
-    const { email } = fakeAccount
-    const account = await sut.loadByEmail(email)
+  describe('loadByEmail()', () => {
+    test('Should return an account if loadByEmail succeeds', async () => {
+      const spyLoadRepository = jest.spyOn(sut, 'loadByEmail')
+      await sut.add(fakeAccount)
+      const { email } = fakeAccount
+      const account = await sut.loadByEmail(email)
 
-    expect(spyLoadRepository).toHaveBeenCalledWith(email)
-    expect(account).toBeTruthy()
-    expect(account.id).toBeTruthy()
+      expect(spyLoadRepository).toHaveBeenCalledWith(email)
+      expect(account).toBeTruthy()
+      expect(account.id).toBeTruthy()
+    })
+
+    test('Should return null if loadByEmail returns null', async () => {
+      const { email } = fakeAccount
+      const account = await sut.loadByEmail(email)
+
+      expect(account).toBeFalsy()
+    })
   })
 
-  test('Should return null if loadByEmail returns null', async () => {
-    const { email } = fakeAccount
-    const account = await sut.loadByEmail(email)
+  describe('updateAccessToken', () => {
+    test('Should update account accessToken if updateAccessToken succeeds', async () => {
+      await sut.add(fakeAccount)
+      const { email } = fakeAccount
+      const account = await sut.loadByEmail(email)
+      expect(account.accessToken).toBeFalsy()
 
-    expect(account).toBeFalsy()
-  })
-
-  test('Should update account accessToken if updateAccessToken succeeds', async () => {
-    await sut.add(fakeAccount)
-    const { email } = fakeAccount
-    const account = await sut.loadByEmail(email)
-    expect(account.accessToken).toBeFalsy()
-
-    await sut.updateAccessToken('any_token', account.id)
-    const newAccount = await sut.loadByEmail(email)
-    expect(newAccount).toBeTruthy()
-    expect(newAccount.accessToken).toBe('any_token')
+      await sut.updateAccessToken('any_token', account.id)
+      const newAccount = await sut.loadByEmail(email)
+      expect(newAccount).toBeTruthy()
+      expect(newAccount.accessToken).toBe('any_token')
+    })
   })
 })
