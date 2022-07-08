@@ -12,8 +12,8 @@ describe('DbLoadAccountByToken Use case', () => {
   }
 
   class DecrypterStub implements Decrypter {
-    async decrypt (value: string): Promise<string> {
-      return Promise.resolve('any_value')
+    decrypt (value: string): string {
+      return 'any_value'
     }
   }
 
@@ -49,7 +49,7 @@ describe('DbLoadAccountByToken Use case', () => {
   test('Should return null if Decrypter returns null', async () => {
     jest
       .spyOn(decrypterStub, 'decrypt')
-      .mockResolvedValueOnce(Promise.resolve(null))
+      .mockReturnValueOnce(null)
 
     const account = await sut.load(accessToken, role)
 
@@ -83,7 +83,7 @@ describe('DbLoadAccountByToken Use case', () => {
   test('Should throw an Error if LoadAccountByTokenRepository throws an Error', async () => {
     jest
       .spyOn(decrypterStub, 'decrypt')
-      .mockResolvedValueOnce(Promise.reject(new Error()))
+      .mockImplementationOnce(() => { throw new Error() })
 
     const promise = sut.load(accessToken, role)
 
