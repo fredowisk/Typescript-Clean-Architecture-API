@@ -29,8 +29,8 @@ describe('Account Routes', () => {
   }
 
   describe('POST /surveys', () => {
-    test('Should return 204 if AddSurvey succeeds', async () => {
-      await request(app).post('/api/surveys').send(fakeSurvey).expect(204)
+    test('Should return 403 when call AddSurvey without accessToken', async () => {
+      await request(app).post('/api/surveys').send(fakeSurvey).expect(403)
     })
   })
 })
