@@ -28,9 +28,9 @@ implements
   async loadByToken (accessToken: string, role?: string): Promise<AccountModel> {
     const accountCollection = await MongoHelper.getCollection('accounts')
     const account = await accountCollection.findOne<AccountModel>({
-      accessToken,
-      role
+      accessToken
     })
+
     return account && MongoHelper.map(account)
   }
 

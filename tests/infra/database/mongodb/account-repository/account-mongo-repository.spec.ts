@@ -1,9 +1,14 @@
 import { MongoHelper } from '@/infra/database/mongodb/helpers/mongo-helper'
 import { AccountMongoRepository } from '@/infra/database/mongodb/account-repository/account-mongo-repository'
+import { Collection } from 'mongodb'
+import { AccountModel } from 'domain/models/account'
 
 describe('Account Mongo Repository', () => {
+  let accountCollection: Collection
+
   beforeAll(async () => {
     await MongoHelper.connect(process.env.MONGO_URL)
+    accountCollection = await MongoHelper.getCollection('accounts')
   })
 
   afterAll(async () => {
@@ -16,7 +21,7 @@ describe('Account Mongo Repository', () => {
 
   const sut = new AccountMongoRepository()
 
-  const fakeAccount = {
+  const fakeAccount: any = {
     name: 'any_name',
     email: 'any_email@mail.com',
     password: 'any_password'
@@ -35,8 +40,8 @@ describe('Account Mongo Repository', () => {
   describe('loadByEmail()', () => {
     test('Should return an account if loadByEmail succeeds', async () => {
       const spyLoadByEmailRepository = jest.spyOn(sut, 'loadByEmail')
-      await sut.add(fakeAccount)
       const { email } = fakeAccount
+      await accountCollection.insertOne(fakeAccount)
       const account = await sut.loadByEmail(email)
 
       expect(spyLoadByEmailRepository).toHaveBeenCalledWith(email)
@@ -45,8 +50,7 @@ describe('Account Mongo Repository', () => {
     })
 
     test('Should return null if loadByEmail returns null', async () => {
-      const { email } = fakeAccount
-      const account = await sut.loadByEmail(email)
+      const account = await sut.loadByEmail(fakeAccount.email)
 
       expect(account).toBeFalsy()
     })
@@ -58,7 +62,6 @@ describe('Account Mongo Repository', () => {
     test('Should call loadByToken without role and return an account', async () => {
       const spyLoadByTokenRepository = jest.spyOn(sut, 'loadByToken')
 
-      const accountCollection = await MongoHelper.getCollection('accounts')
       await accountCollection.insertOne({ ...fakeAccount, accessToken })
       const account = await sut.loadByToken(accessToken)
 
@@ -71,7 +74,6 @@ describe('Account Mongo Repository', () => {
       const role = 'any_role'
       const spyLoadByTokenRepository = jest.spyOn(sut, 'loadByToken')
 
-      const accountCollection = await MongoHelper.getCollection('accounts')
       await accountCollection.insertOne({ ...fakeAccount, accessToken, role })
       const account = await sut.loadByToken(accessToken, role)
 
@@ -89,13 +91,15 @@ describe('Account Mongo Repository', () => {
 
   describe('updateAccessToken', () => {
     test('Should update account accessToken if updateAccessToken succeeds', async () => {
-      await sut.add(fakeAccount)
-      const { email } = fakeAccount
-      const account = await sut.loadByEmail(email)
-      expect(account.accessToken).toBeFalsy()
+      await accountCollection.insertOne(fakeAccount)
+      const { _id: id } = fakeAccount
 
-      await sut.updateAccessToken('any_token', account.id)
-      const newAccount = await sut.loadByEmail(email)
+      await sut.updateAccessToken('any_token', id)
+
+      const newAccount = await accountCollection.findOne<AccountModel>({
+        _id: id
+      })
+
       expect(newAccount).toBeTruthy()
       expect(newAccount.accessToken).toBe('any_token')
     })
