@@ -11,7 +11,7 @@ describe('DbLoadAccountByToken Use case', () => {
   const decrypterStub = new DecrypterStub()
   const sut = new DbLoadAccountByToken(decrypterStub)
 
-  test('Should call Decrypter with correct values', async () => {
+  test('Should call Decrypter with correct value', async () => {
     const accessToken = 'access_token'
     const decryptSpy = jest.spyOn(decrypterStub, 'decrypt')
     await sut.load(accessToken)
