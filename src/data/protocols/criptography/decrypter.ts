@@ -1,5 +1,5 @@
 interface Decrypter {
-  decrypt: (value: string) => Promise<string>
+  decrypt: (value: string) => string
 }
 
 export { Decrypter }
