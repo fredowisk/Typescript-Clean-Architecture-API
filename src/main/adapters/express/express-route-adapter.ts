@@ -14,6 +14,6 @@ export const adaptRoute = (controller: Controller) => {
       httpRequest
     )
 
-    res.status(statusCode).json(body)
+    return res.status(statusCode).json(body)
   }
 }

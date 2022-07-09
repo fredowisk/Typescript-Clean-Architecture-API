@@ -3,14 +3,13 @@ import request from 'supertest'
 import app from '@/main/config/app'
 import { sign } from 'jsonwebtoken'
 import env from '@/main/config/env'
+import { Collection } from 'mongodb'
 
 describe('Account Routes', () => {
+  let accountCollection: Collection
   beforeAll(async () => {
     await MongoHelper.connect(process.env.MONGO_URL)
-  })
-
-  afterAll(async () => {
-    await MongoHelper.disconnect()
+    accountCollection = await MongoHelper.getCollection('accounts')
   })
 
   beforeEach(async () => {
@@ -37,7 +36,6 @@ describe('Account Routes', () => {
     })
 
     test('Should return 204 when call AddSurvey with a valid accessToken', async () => {
-      const accountCollection = await MongoHelper.getCollection('accounts')
       const newUser: any = {
         name: 'Fred',
         email: 'fred@mail.com',
