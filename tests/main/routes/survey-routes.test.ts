@@ -10,9 +10,6 @@ describe('Account Routes', () => {
   beforeAll(async () => {
     await MongoHelper.connect(process.env.MONGO_URL)
     accountCollection = await MongoHelper.getCollection('accounts')
-  })
-
-  beforeEach(async () => {
     await MongoHelper.clear('surveys')
     await MongoHelper.clear('accounts')
   })

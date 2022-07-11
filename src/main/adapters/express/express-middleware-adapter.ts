@@ -17,8 +17,7 @@ const adaptMiddleware = (middleware: Middleware) => {
 
     if (statusCode === 200) {
       Object.assign(req, body)
-      next()
-      return
+      return next()
     }
 
     return res.status(statusCode).json(body)

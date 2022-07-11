@@ -70,8 +70,8 @@ describe('Account Mongo Repository', () => {
       expect(account.id).toBeTruthy()
     })
 
-    test('Should call loadByToken with role and return an account', async () => {
-      const role = 'any_role'
+    test('Should call loadByToken with admin role and return an account', async () => {
+      const role = 'admin'
       const spyLoadByTokenRepository = jest.spyOn(sut, 'loadByToken')
 
       await accountCollection.insertOne({ ...fakeAccount, accessToken, role })
@@ -82,10 +82,28 @@ describe('Account Mongo Repository', () => {
       expect(account.id).toBeTruthy()
     })
 
+    test('Should return null when call loadByToken with an invalid role', async () => {
+      const role = 'admin'
+      await accountCollection.insertOne({ ...fakeAccount, accessToken })
+      const account = await sut.loadByToken(accessToken, role)
+
+      expect(account).toBeFalsy()
+    })
+
     test('Should return null if loadByToken returns null', async () => {
       const account = await sut.loadByToken(accessToken)
 
       expect(account).toBeFalsy()
+    })
+
+    test('Should call loadByToken and return an account if user role is admin', async () => {
+      const role = 'admin'
+
+      await accountCollection.insertOne({ ...fakeAccount, accessToken, role })
+      const account = await sut.loadByToken(accessToken)
+
+      expect(account).toBeTruthy()
+      expect(account.id).toBeTruthy()
     })
   })
 
