@@ -3,15 +3,21 @@ import {
   HttpRequest,
   HttpResponse,
   LoadSurveys,
-  ok
+  ok,
+  serverError
 } from './load-surveys-controller-protocols'
 
 class LoadSurveysController implements Controller {
   constructor (private readonly loadSurveys: LoadSurveys) {}
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
-    const httpResponse = await this.loadSurveys.load()
-    return ok(httpResponse)
+    try {
+      const httpResponse = await this.loadSurveys.load()
+
+      return ok(httpResponse)
+    } catch (error) {
+      return serverError(error)
+    }
   }
 }
 
