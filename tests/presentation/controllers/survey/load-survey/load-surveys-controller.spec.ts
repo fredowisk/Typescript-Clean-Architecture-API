@@ -1,6 +1,7 @@
 import { LoadSurveysController } from '@/presentation/controllers/survey/load-survey/load-surveys-controller'
 import {
   LoadSurveys,
+  ok,
   SurveyModel
 } from '@/presentation/controllers/survey/load-survey/load-surveys-controller-protocols'
 
@@ -44,5 +45,11 @@ describe('Load Surveys Controller', () => {
     await sut.handle({})
 
     expect(loadSpy).toHaveBeenCalledTimes(1)
+  })
+
+  test('Should return 200 on success', async () => {
+    const httpResponse = await sut.handle({})
+
+    expect(httpResponse).toEqual(ok(fakeSurveysList))
   })
 })
