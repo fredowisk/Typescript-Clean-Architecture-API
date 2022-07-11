@@ -26,13 +26,16 @@ describe('Survey Mongo Repository', () => {
         image: 'any_image',
         answer: 'any_answer'
       }
-    ]
+    ],
+    date: new Date()
   }
 
   test('Should add a survey on success', async () => {
     await sut.add(fakeSurvey)
 
-    const survey = await surveyCollection.findOne({ question: fakeSurvey.question })
+    const survey = await surveyCollection.findOne({
+      question: fakeSurvey.question
+    })
     expect(survey).toBeTruthy()
   })
 })

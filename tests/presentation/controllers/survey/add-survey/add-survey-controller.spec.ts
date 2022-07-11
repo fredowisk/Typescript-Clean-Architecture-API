@@ -1,9 +1,14 @@
 import { AddSurveyController } from '@/presentation/controllers/survey/add-survey/add-survey-controller'
 import { HttpRequest } from '@/presentation/protocols/http'
-import { badRequest, noContent, serverError } from '@/presentation/helpers/http/http-helper'
+import {
+  badRequest,
+  noContent,
+  serverError
+} from '@/presentation/helpers/http/http-helper'
 import { Validation } from '@/presentation/protocols/validation'
 import { AddSurvey } from '@/application/usecases/add-survey/add-survey'
 import { AddSurveyModel } from '@/application/usecases/add-survey/add-survey-model'
+import MockDate from 'mockdate'
 
 describe('Add Survey Controller', () => {
   class ValidationStub implements Validation {
@@ -13,9 +18,7 @@ describe('Add Survey Controller', () => {
   }
 
   class AddSurveyStub implements AddSurvey {
-    async add (data: AddSurveyModel): Promise<void> {
-
-    }
+    async add (data: AddSurveyModel): Promise<void> {}
   }
 
   const validationStub = new ValidationStub()
@@ -30,9 +33,12 @@ describe('Add Survey Controller', () => {
           image: 'any_image',
           answer: 'any_answer'
         }
-      ]
+      ],
+      date: new Date()
     }
   }
+
+  MockDate.set(new Date())
 
   test('Should call Validation with correct values', async () => {
     const validateSpy = jest.spyOn(validationStub, 'validate')
@@ -56,7 +62,9 @@ describe('Add Survey Controller', () => {
   })
 
   test('Should return 500 if AddSurvey throw an Error', async () => {
-    jest.spyOn(addSurveyStub, 'add').mockReturnValueOnce(Promise.reject(new Error()))
+    jest
+      .spyOn(addSurveyStub, 'add')
+      .mockReturnValueOnce(Promise.reject(new Error()))
     const httpResponse = await sut.handle(httpRequest)
 
     expect(httpResponse).toEqual(serverError(new Error()))

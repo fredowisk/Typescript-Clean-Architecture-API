@@ -5,7 +5,7 @@ import { sign } from 'jsonwebtoken'
 import env from '@/main/config/env'
 import { Collection } from 'mongodb'
 
-describe('Account Routes', () => {
+describe('Survey Routes', () => {
   let accountCollection: Collection
   beforeAll(async () => {
     await MongoHelper.connect(process.env.MONGO_URL)

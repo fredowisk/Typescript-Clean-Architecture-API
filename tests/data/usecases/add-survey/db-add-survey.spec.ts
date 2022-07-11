@@ -19,7 +19,8 @@ describe('DbAddSurvey Use case', () => {
         image: 'any_image',
         answer: 'any_answer'
       }
-    ]
+    ],
+    date: new Date()
   }
 
   test('Should call AddSurveyRepository with correct values', async () => {
@@ -30,7 +31,9 @@ describe('DbAddSurvey Use case', () => {
   })
 
   test('Should throw an Error if AddSurveyRepository throws an Error', async () => {
-    jest.spyOn(addSurveyRepositoryStub, 'add').mockReturnValueOnce(Promise.reject(new Error()))
+    jest
+      .spyOn(addSurveyRepositoryStub, 'add')
+      .mockReturnValueOnce(Promise.reject(new Error()))
     const promise = sut.add(fakeSurvey)
 
     await expect(promise).rejects.toThrow()
