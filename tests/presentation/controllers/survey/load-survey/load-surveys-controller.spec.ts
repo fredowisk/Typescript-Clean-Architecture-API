@@ -2,6 +2,7 @@ import { LoadSurveysController } from '@/presentation/controllers/survey/load-su
 import {
   LoadSurveys,
   ok,
+  serverError,
   SurveyModel
 } from '@/presentation/controllers/survey/load-survey/load-surveys-controller-protocols'
 
@@ -51,5 +52,13 @@ describe('Load Surveys Controller', () => {
     const httpResponse = await sut.handle({})
 
     expect(httpResponse).toEqual(ok(fakeSurveysList))
+  })
+
+  test('Should return 500 if LoadSurveys throw an Error', async () => {
+    jest.spyOn(loadSurveysStub, 'load').mockRejectedValueOnce(new Error())
+
+    const httpResponse = await sut.handle({})
+
+    expect(httpResponse).toEqual(serverError(new Error()))
   })
 })
