@@ -17,8 +17,6 @@ describe('Survey Mongo Repository', () => {
     await MongoHelper.clear('surveys')
   })
 
-  const sut = new SurveyMongoRepository()
-
   const fakeSurvey = {
     question: 'any_question',
     answers: [
@@ -30,12 +28,16 @@ describe('Survey Mongo Repository', () => {
     date: new Date()
   }
 
-  test('Should add a survey on success', async () => {
-    await sut.add(fakeSurvey)
+  const sut = new SurveyMongoRepository()
 
-    const survey = await surveyCollection.findOne({
-      question: fakeSurvey.question
+  describe('add()', () => {
+    test('Should add a survey on success', async () => {
+      await sut.add(fakeSurvey)
+
+      const survey = await surveyCollection.findOne({
+        question: fakeSurvey.question
+      })
+      expect(survey).toBeTruthy()
     })
-    expect(survey).toBeTruthy()
   })
 })
