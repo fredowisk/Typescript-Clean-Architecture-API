@@ -1,0 +1,17 @@
+import {
+  Controller,
+  HttpRequest,
+  HttpResponse,
+  LoadSurveys
+} from './load-surveys-controller-protocols'
+
+class LoadSurveysController implements Controller {
+  constructor (private readonly loadSurveys: LoadSurveys) {}
+
+  async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
+    await this.loadSurveys.load()
+    return Promise.resolve(null)
+  }
+}
+
+export { LoadSurveysController }
