@@ -1,6 +1,7 @@
 import { LoadSurveysController } from '@/presentation/controllers/survey/load-survey/load-surveys-controller'
 import {
   LoadSurveys,
+  noContent,
   ok,
   serverError,
   SurveyModel
@@ -52,6 +53,14 @@ describe('Load Surveys Controller', () => {
     const httpResponse = await sut.handle({})
 
     expect(httpResponse).toEqual(ok(fakeSurveysList))
+  })
+
+  test('Should return 204 if LoadSurveys returns empty', async () => {
+    jest.spyOn(loadSurveysStub, 'load').mockResolvedValueOnce(null)
+
+    const httpResponse = await sut.handle({})
+
+    expect(httpResponse).toEqual(noContent())
   })
 
   test('Should return 500 if LoadSurveys throw an Error', async () => {
