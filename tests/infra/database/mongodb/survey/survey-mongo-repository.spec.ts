@@ -9,10 +9,6 @@ describe('Survey Mongo Repository', () => {
     surveyCollection = await MongoHelper.getCollection('surveys')
   })
 
-  afterAll(async () => {
-    await MongoHelper.disconnect()
-  })
-
   beforeEach(async () => {
     await MongoHelper.clear('surveys')
   })
@@ -38,6 +34,15 @@ describe('Survey Mongo Repository', () => {
         question: fakeSurvey.question
       })
       expect(survey).toBeTruthy()
+    })
+  })
+
+  describe('loadAll()', () => {
+    test('Should load all surveys on success', async () => {
+      await surveyCollection.insertOne(fakeSurvey)
+      const surveys = await sut.loadAll()
+
+      expect(surveys).toEqual([fakeSurvey])
     })
   })
 })
