@@ -7,11 +7,13 @@ import { Collection } from 'mongodb'
 
 describe('Survey Routes', () => {
   let accountCollection: Collection
+  let accessToken: string
   beforeAll(async () => {
     await MongoHelper.connect(process.env.MONGO_URL)
     accountCollection = await MongoHelper.getCollection('accounts')
     await MongoHelper.clear('surveys')
     await MongoHelper.clear('accounts')
+    accessToken = await makeAccessToken()
   })
 
   const fakeSurvey = {
@@ -27,36 +29,40 @@ describe('Survey Routes', () => {
     ]
   }
 
+  const makeAccessToken = async (): Promise<string> => {
+    const newUser: any = {
+      name: 'Fred',
+      email: 'fred@mail.com',
+      password: '123',
+      role: 'admin'
+    }
+
+    await accountCollection.insertOne(newUser)
+
+    const { _id: id } = newUser
+
+    const token = sign({ id }, env.jwtSecret)
+
+    await accountCollection.updateOne(
+      {
+        _id: id
+      },
+      {
+        $set: {
+          accessToken: token
+        }
+      }
+    )
+
+    return token
+  }
+
   describe('POST /surveys', () => {
     test('Should return 403 when call AddSurvey without accessToken', async () => {
       await request(app).post('/api/surveys').send(fakeSurvey).expect(403)
     })
 
     test('Should return 204 when call AddSurvey with a valid accessToken', async () => {
-      const newUser: any = {
-        name: 'Fred',
-        email: 'fred@mail.com',
-        password: '123',
-        role: 'admin'
-      }
-
-      await accountCollection.insertOne(newUser)
-
-      const { _id: id } = newUser
-
-      const accessToken = sign({ id }, env.jwtSecret)
-
-      await accountCollection.updateOne(
-        {
-          _id: id
-        },
-        {
-          $set: {
-            accessToken
-          }
-        }
-      )
-
       await request(app)
         .post('/api/surveys')
         .set('x-access-token', accessToken)
@@ -71,29 +77,6 @@ describe('Survey Routes', () => {
     })
 
     test('Should return 200 when call AddSurvey with a valid accessToken', async () => {
-      const newUser: any = {
-        name: 'Fred',
-        email: 'fred@mail.com',
-        password: '123'
-      }
-
-      await accountCollection.insertOne(newUser)
-
-      const { _id: id } = newUser
-
-      const accessToken = sign({ id }, env.jwtSecret)
-
-      await accountCollection.updateOne(
-        {
-          _id: id
-        },
-        {
-          $set: {
-            accessToken
-          }
-        }
-      )
-
       await request(app)
         .get('/api/surveys')
         .set('x-access-token', accessToken)
