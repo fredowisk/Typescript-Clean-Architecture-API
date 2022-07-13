@@ -13,7 +13,7 @@ describe('Survey Mongo Repository', () => {
     await MongoHelper.clear('surveys')
   })
 
-  const fakeSurvey = {
+  const fakeSurvey: any = {
     question: 'any_question',
     answers: [
       {
@@ -49,6 +49,16 @@ describe('Survey Mongo Repository', () => {
       const surveys = await sut.loadAll()
 
       expect(surveys).toEqual([])
+    })
+  })
+
+  describe('loadById', () => {
+    test('Should load survey by id on success', async () => {
+      await surveyCollection.insertOne(fakeSurvey)
+
+      const survey = await sut.loadById(fakeSurvey.id)
+
+      expect(survey).toBeTruthy()
     })
   })
 })
