@@ -2,8 +2,8 @@ import {
   SaveSurveyResultRepository,
   SaveSurveyResultModel,
   SurveyResultModel
-} from '@/data/usecases/save-survey-result/db-save-survey-result-protocols'
-import { DbSaveSurveyResult } from '@/data/usecases/save-survey-result/db-save-survey-result'
+} from '@/data/usecases/survey/save-survey-result/db-save-survey-result-protocols'
+import { DbSaveSurveyResult } from '@/data/usecases/survey/save-survey-result/db-save-survey-result'
 
 describe('Db Save Survey Result', () => {
   const fakeResult = {

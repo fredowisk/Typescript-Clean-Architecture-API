@@ -1,6 +1,6 @@
-import { DbAddSurvey } from '@/data/usecases/add-survey/db-add-survey'
-import { AddSurvey } from 'application/usecases/add-survey/add-survey'
-import { AddSurveyModel } from 'application/usecases/add-survey/add-survey-model'
+import { DbAddSurvey } from '@/data/usecases/survey/add-survey/db-add-survey'
+import { AddSurvey } from '@/application/usecases/survey/add-survey/add-survey'
+import { AddSurveyModel } from '@/application/usecases/survey/add-survey/add-survey-model'
 
 describe('DbAddSurvey Use case', () => {
   class AddSurveyRepositoryStub implements AddSurvey {

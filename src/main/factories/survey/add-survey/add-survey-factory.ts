@@ -1,4 +1,4 @@
-import { DbAddSurvey } from '@/data/usecases/add-survey/db-add-survey'
+import { DbAddSurvey } from '@/data/usecases/survey/add-survey/db-add-survey'
 import { ErrorMongoRepository } from '@/infra/database/mongodb/log-repository/log-mongo-repository'
 import { SurveyMongoRepository } from '@/infra/database/mongodb/survey-repository/survey-mongo-repository'
 import { LogControllerDecorator } from '@/main/decorators/log-controller-decorator'

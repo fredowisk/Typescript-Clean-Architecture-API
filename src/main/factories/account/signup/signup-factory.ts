@@ -1,4 +1,4 @@
-import { DbAddAccount } from '@/data/usecases/add-account/db-add-account'
+import { DbAddAccount } from '@/data/usecases/account/add-account/db-add-account'
 import { BcryptAdapter } from '@/infra/cryptography/bcrypt-adapter/bcrypt-adapter'
 import { AccountMongoRepository } from '@/infra/database/mongodb/account-repository/account-mongo-repository'
 import { ErrorMongoRepository } from '@/infra/database/mongodb/log-repository/log-mongo-repository'
@@ -8,7 +8,7 @@ import { LogControllerDecorator } from '../../../decorators/log-controller-decor
 import { signUpValidation } from './signup-validation-factory'
 import env from '@/main/config/env'
 import { JwtAdapter } from '@/infra/cryptography/jwt-adapter/jwt-adapter'
-import { UserAuthentication } from '@/data/usecases/authentication/user-authentication'
+import { UserAuthentication } from '@/data/usecases/account/authentication/user-authentication'
 
 export const makeSignUpController = (): Controller => {
   const bcryptAdapter = new BcryptAdapter(env.salt)

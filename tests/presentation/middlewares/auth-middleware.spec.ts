@@ -6,8 +6,8 @@ import {
 } from '@/presentation/helpers/http/http-helper'
 import { AccessDeniedError } from '@/presentation/errors/access-denied-error'
 import { AuthMiddleware } from '@/presentation/middlewares/auth-middleware'
-import { AccountModel } from '@/domain/models/account'
-import { LoadAccountByToken } from '@/application/usecases/load-account/load-account-by-token'
+import { AccountModel } from '@/domain/models/account/account'
+import { LoadAccountByToken } from '@/application/usecases/account/load-account/load-account-by-token'
 
 describe('Auth Middleware', () => {
   const fakeAccount: AccountModel = {

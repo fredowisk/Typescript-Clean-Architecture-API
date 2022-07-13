@@ -1,9 +1,9 @@
-import { DbLoadAccountByToken } from '@/data/usecases/load-account/db-load-account-by-token'
+import { DbLoadAccountByToken } from '@/data/usecases/account/load-account/db-load-account-by-token'
 import {
   LoadAccountByTokenRepository,
   AccountModel,
   Decrypter
-} from '@/data/usecases/load-account/db-load-account-by-token-protocols'
+} from '@/data/usecases/account/load-account/db-load-account-by-token-protocols'
 
 describe('DbLoadAccountByToken Use case', () => {
   const fakeAccount = {

@@ -2,8 +2,8 @@ import { HashComparer } from '@/data/protocols/criptography/hash-comparer'
 import { Encrypter } from '@/data/protocols/criptography/encrypter'
 import { LoadAccountByEmailRepository } from '@/data/protocols/db/account-repository/load-account-by-email-repository'
 import { UpdateAccessTokenRepository } from '@/data/protocols/db/account-repository/update-access-token-repository'
-import { UserAuthentication } from '@/data/usecases/authentication/user-authentication'
-import { AccountModel } from '@/domain/models/account'
+import { UserAuthentication } from '@/data/usecases/account/authentication/user-authentication'
+import { AccountModel } from '@/domain/models/account/account'
 
 describe('Authentication', () => {
   const fakeAccount: AccountModel = {

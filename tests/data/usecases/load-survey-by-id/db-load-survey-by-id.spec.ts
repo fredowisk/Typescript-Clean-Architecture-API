@@ -1,8 +1,8 @@
 import {
   SurveyModel,
   LoadSurveyByIdRepository
-} from '@/data/usecases/load-survey-by-id/db-load-survey-by-id-protocols'
-import { DbLoadSurveyById } from '@/data/usecases/load-survey-by-id/db-load-survey-by-id'
+} from '@/data/usecases/survey/load-survey-by-id/db-load-survey-by-id-protocols'
+import { DbLoadSurveyById } from '@/data/usecases/survey/load-survey-by-id/db-load-survey-by-id'
 
 describe('Db LoadSurvey By Id', () => {
   const fakeSurvey: SurveyModel = {

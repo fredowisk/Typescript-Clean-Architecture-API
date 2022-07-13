@@ -6,8 +6,8 @@ import {
   serverError
 } from '@/presentation/helpers/http/http-helper'
 import { Validation } from '@/presentation/protocols/validation'
-import { AddSurvey } from '@/application/usecases/add-survey/add-survey'
-import { AddSurveyModel } from '@/application/usecases/add-survey/add-survey-model'
+import { AddSurvey } from '@/application/usecases/survey/add-survey/add-survey'
+import { AddSurveyModel } from '@/application/usecases/survey/add-survey/add-survey-model'
 import MockDate from 'mockdate'
 
 describe('Add Survey Controller', () => {

@@ -1,7 +1,7 @@
 import { MongoHelper } from '@/infra/database/mongodb/helpers/mongo-helper'
 import { AccountMongoRepository } from '@/infra/database/mongodb/account-repository/account-mongo-repository'
 import { Collection } from 'mongodb'
-import { AccountModel } from 'domain/models/account'
+import { AccountModel } from '@/domain/models/account/account'
 
 describe('Account Mongo Repository', () => {
   let accountCollection: Collection

@@ -14,7 +14,7 @@ import {
   unauthorized
 } from '@/presentation/helpers/http/http-helper'
 import { LoginController } from '@/presentation/controllers/account/login/login-controller'
-import { AuthenticationModel } from '@/application/usecases/authentication/authentication-model'
+import { AuthenticationModel } from '@/application/usecases/account/authentication/authentication-model'
 
 describe('Login Controller', () => {
   class AuthenticationStub implements Authentication {

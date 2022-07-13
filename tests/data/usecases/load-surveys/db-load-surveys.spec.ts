@@ -1,8 +1,8 @@
-import { DbLoadSurveys } from '@/data/usecases/load-surveys/db-load-surveys'
+import { DbLoadSurveys } from '@/data/usecases/survey/load-surveys/db-load-surveys'
 import {
   LoadSurveysRepository,
   SurveyModel
-} from '@/data/usecases/load-surveys/db-load-surveys-protocols'
+} from '@/data/usecases/survey/load-surveys/db-load-surveys-protocols'
 
 describe('Db Load Surveys', () => {
   const fakeSurveysList: SurveyModel[] = [
