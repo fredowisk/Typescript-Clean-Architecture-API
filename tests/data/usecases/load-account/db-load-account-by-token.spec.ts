@@ -1,7 +1,9 @@
-import { Decrypter } from '@/data/protocols/criptography/decrypter'
 import { DbLoadAccountByToken } from '@/data/usecases/load-account/db-load-account-by-token'
-import { LoadAccountByTokenRepository } from '@/data/protocols/db/account-repository/load-account-by-token-repository'
-import { AccountModel } from 'domain/models/account'
+import {
+  LoadAccountByTokenRepository,
+  AccountModel,
+  Decrypter
+} from '@/data/usecases/load-account/db-load-account-by-token-protocols'
 
 describe('DbLoadAccountByToken Use case', () => {
   const fakeAccount = {
@@ -47,9 +49,7 @@ describe('DbLoadAccountByToken Use case', () => {
   })
 
   test('Should return null if Decrypter returns null', async () => {
-    jest
-      .spyOn(decrypterStub, 'decrypt')
-      .mockReturnValueOnce(null)
+    jest.spyOn(decrypterStub, 'decrypt').mockReturnValueOnce(null)
 
     const account = await sut.load(accessToken, role)
 
@@ -81,9 +81,9 @@ describe('DbLoadAccountByToken Use case', () => {
   })
 
   test('Should throw an Error if LoadAccountByTokenRepository throws an Error', async () => {
-    jest
-      .spyOn(decrypterStub, 'decrypt')
-      .mockImplementationOnce(() => { throw new Error() })
+    jest.spyOn(decrypterStub, 'decrypt').mockImplementationOnce(() => {
+      throw new Error()
+    })
 
     const promise = sut.load(accessToken, role)
 
