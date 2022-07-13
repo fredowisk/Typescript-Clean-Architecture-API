@@ -9,9 +9,9 @@ class DbSaveSurveyResult implements SaveSurveyResult {
   ) {}
 
   async save (data: SaveSurveyResultModel): Promise<SurveyResultModel> {
-    await this.saveSurveyResultRepository.save(data)
+    const surveyResult = await this.saveSurveyResultRepository.save(data)
 
-    return Promise.resolve(null)
+    return surveyResult
   }
 }
 
