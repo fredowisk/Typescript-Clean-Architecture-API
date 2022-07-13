@@ -22,7 +22,7 @@ implements
   async loadByEmail (email: string): Promise<AccountModel> {
     const accountCollection = await MongoHelper.getCollection('accounts')
     const account = await accountCollection.findOne<AccountModel>({ email })
-    return account && MongoHelper.map(account)
+    return account && MongoHelper.map<AccountModel>(account)
   }
 
   async loadByToken (accessToken: string, role?: string): Promise<AccountModel> {
@@ -39,7 +39,7 @@ implements
       ]
     })
 
-    return account && MongoHelper.map(account)
+    return account && MongoHelper.map<AccountModel>(account)
   }
 
   async updateAccessToken (token: string, id: string): Promise<void> {

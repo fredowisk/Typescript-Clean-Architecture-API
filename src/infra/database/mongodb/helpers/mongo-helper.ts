@@ -1,4 +1,3 @@
-import { AccountModel } from '@/domain/models/account'
 import { Collection, MongoClient } from 'mongodb'
 
 const MongoHelper = {
@@ -24,7 +23,7 @@ const MongoHelper = {
     collection.deleteMany({})
   },
 
-  map (data: any): AccountModel {
+  map <T>(data: any): T {
     const { _id, ...rest } = data
     return { ...rest, id: _id }
   }
