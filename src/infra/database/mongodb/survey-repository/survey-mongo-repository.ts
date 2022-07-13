@@ -21,14 +21,14 @@ implements
     const surveyCollection = await MongoHelper.getCollection('surveys')
     const surveys = await surveyCollection.find().toArray()
 
-    return surveys as unknown as SurveyModel[]
+    return surveys?.map((survey) => MongoHelper.map<SurveyModel>(survey))
   }
 
   async loadById (id: string): Promise<SurveyModel> {
     const surveyCollection = await MongoHelper.getCollection('surveys')
     const survey = await surveyCollection.findOne<SurveyModel>({ id })
 
-    return survey
+    return survey && MongoHelper.map<SurveyModel>(survey)
   }
 }
 

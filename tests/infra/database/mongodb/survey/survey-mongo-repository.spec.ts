@@ -42,7 +42,8 @@ describe('Survey Mongo Repository', () => {
       await surveyCollection.insertOne(fakeSurvey)
       const surveys = await sut.loadAll()
 
-      expect(surveys).toEqual([fakeSurvey])
+      expect(surveys).toBeTruthy()
+      expect(surveys[0].id).toBeTruthy()
     })
 
     test('Should load an empty surveys list', async () => {
@@ -59,6 +60,7 @@ describe('Survey Mongo Repository', () => {
       const survey = await sut.loadById(fakeSurvey.id)
 
       expect(survey).toBeTruthy()
+      expect(survey.id).toBeTruthy()
     })
   })
 })
