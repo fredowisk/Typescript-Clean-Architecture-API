@@ -1,10 +1,11 @@
 import {
   LoadSurveyById,
-  noContent,
+  forbidden,
   ok,
   HttpRequest,
   Controller,
-  HttpResponse
+  HttpResponse,
+  InvalidParamError
 } from './save-survey-result-protocols'
 
 class SaveSurveyResultController implements Controller {
@@ -15,7 +16,7 @@ class SaveSurveyResultController implements Controller {
       httpRequest.params.surveyId
     )
 
-    if (!survey) return noContent()
+    if (!survey) return forbidden(new InvalidParamError('surveyId'))
 
     return ok(survey)
   }
