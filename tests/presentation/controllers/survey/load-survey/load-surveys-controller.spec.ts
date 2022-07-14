@@ -12,7 +12,7 @@ describe('Load Surveys Controller', () => {
     {
       id: 'any_id',
       question: 'any_question',
-      answer: [
+      answers: [
         {
           image: 'any_image',
           answer: 'any_answer'
@@ -23,7 +23,7 @@ describe('Load Surveys Controller', () => {
     {
       id: 'other_id',
       question: 'other_question',
-      answer: [
+      answers: [
         {
           image: 'other_image',
           answer: 'other_answer'

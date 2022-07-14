@@ -8,7 +8,7 @@ describe('Db LoadSurvey By Id', () => {
   const fakeSurvey: SurveyModel = {
     id: 'any_id',
     question: 'any_question',
-    answer: [
+    answers: [
       {
         image: 'any_image',
         answer: 'any_answer'

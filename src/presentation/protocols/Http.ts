@@ -4,6 +4,7 @@ interface HttpResponse {
 }
 
 interface HttpRequest {
+  params?: any
   body?: any
   headers?: any
 }

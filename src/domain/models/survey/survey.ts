@@ -3,7 +3,7 @@ import { SurveyAnswerModel } from './survey-answer'
 interface SurveyModel {
   id: string
   question: string
-  answer: SurveyAnswerModel[]
+  answers: SurveyAnswerModel[]
   date: Date
 }
 
