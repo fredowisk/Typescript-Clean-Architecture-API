@@ -4,7 +4,8 @@ import {
   forbidden,
   InvalidParamError,
   HttpRequest,
-  serverError
+  serverError,
+  ok
 } from '@/presentation/controllers/survey/survey-result/save-survey-result/save-survey-result-protocols'
 import { SurveyModel } from '@/domain/models/survey/survey'
 import { SaveSurveyResult } from 'application/usecases/survey/save-survey-result/save-survey-result'
@@ -124,5 +125,11 @@ describe('Save Survey Result Controller', () => {
     const httpResponse = await sut.handle(fakeRequest)
 
     expect(httpResponse).toEqual(serverError(new Error()))
+  })
+
+  test('Should return 200 on succcess', async () => {
+    const httpResponse = await sut.handle(fakeRequest)
+
+    expect(httpResponse).toEqual(ok(fakeSurveyResult))
   })
 })
