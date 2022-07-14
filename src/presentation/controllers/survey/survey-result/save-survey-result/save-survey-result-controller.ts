@@ -5,20 +5,25 @@ import {
   HttpRequest,
   Controller,
   HttpResponse,
-  InvalidParamError
+  InvalidParamError,
+  serverError
 } from './save-survey-result-protocols'
 
 class SaveSurveyResultController implements Controller {
   constructor (private readonly loadSurveyById: LoadSurveyById) {}
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
-    const survey = await this.loadSurveyById.loadById(
-      httpRequest.params.surveyId
-    )
+    try {
+      const survey = await this.loadSurveyById.loadById(
+        httpRequest.params.surveyId
+      )
 
-    if (!survey) return forbidden(new InvalidParamError('surveyId'))
+      if (!survey) return forbidden(new InvalidParamError('surveyId'))
 
-    return ok(survey)
+      return ok(survey)
+    } catch (error) {
+      return serverError(error)
+    }
   }
 }
 
