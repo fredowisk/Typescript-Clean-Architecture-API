@@ -1,7 +1,11 @@
 import { SaveSurveyResultController } from '@/presentation/controllers/survey/survey-result/save-survey-result/save-survey-result-controller'
-import { LoadSurveyById } from 'application/usecases/survey/load-survey-by-id/load-survey-by-id'
-import { SurveyModel } from 'domain/models/survey/survey'
-import { HttpRequest } from 'presentation/protocols/http'
+import {
+  LoadSurveyById,
+  forbidden,
+  InvalidParamError,
+  HttpRequest
+} from '@/presentation/controllers/survey/survey-result/save-survey-result/save-survey-result-protocols'
+import { SurveyModel } from '@/domain/models/survey/survey'
 
 describe('Save Survey Result Controller', () => {
   const fakeSurvey: SurveyModel = {
@@ -39,13 +43,13 @@ describe('Save Survey Result Controller', () => {
     expect(loadByIdSpy).toHaveBeenCalledWith(fakeRequest.params.surveyId)
   })
 
-  test('Should return 204 if LoadSurveyById returns null', async () => {
+  test('Should return 403 if LoadSurveyById returns null', async () => {
     jest
       .spyOn(loadSurveyByIdStub, 'loadById')
       .mockResolvedValueOnce(Promise.resolve(null))
 
     const httpResponse = await sut.handle(fakeRequest)
 
-    expect(httpResponse.statusCode).toBe(204)
+    expect(httpResponse).toEqual(forbidden(new InvalidParamError('surveyId')))
   })
 })
