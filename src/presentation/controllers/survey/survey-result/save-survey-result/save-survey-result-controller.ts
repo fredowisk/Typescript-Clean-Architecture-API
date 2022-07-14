@@ -34,14 +34,14 @@ class SaveSurveyResultController implements Controller {
         return forbidden(new InvalidParamError('answer'))
       }
 
-      await this.saveSurveyResult.save({
+      const savedSurvey = await this.saveSurveyResult.save({
         surveyId,
         accountId,
         answer,
         date: new Date()
       })
 
-      return ok(survey)
+      return ok(savedSurvey)
     } catch (error) {
       return serverError(error)
     }
