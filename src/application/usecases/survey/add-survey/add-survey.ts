@@ -1,7 +1,7 @@
-import { AddSurveyModel } from './add-survey-model'
+import { AddSurveyParams } from './add-survey-model'
 
 interface AddSurvey {
-  add: (data: AddSurveyModel) => Promise<void>
+  add: (data: AddSurveyParams) => Promise<void>
 }
 
 export { AddSurvey }

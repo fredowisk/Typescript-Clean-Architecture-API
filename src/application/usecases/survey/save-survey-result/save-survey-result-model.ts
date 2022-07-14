@@ -1,5 +1,5 @@
 import { SurveyResultModel } from '@/domain/models/survey/survey-result'
 
-type SaveSurveyResultModel = Omit<SurveyResultModel, 'id'>
+type SaveSurveyResultParams = Omit<SurveyResultModel, 'id'>
 
-export { SaveSurveyResultModel }
+export { SaveSurveyResultParams }

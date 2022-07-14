@@ -1,6 +1,6 @@
-interface AuthenticationModel {
+interface AuthenticationParams {
   email: string
   password: string
 }
 
-export { AuthenticationModel }
+export { AuthenticationParams }

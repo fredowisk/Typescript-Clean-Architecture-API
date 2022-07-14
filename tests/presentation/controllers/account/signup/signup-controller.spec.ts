@@ -1,11 +1,11 @@
 import SignUpController from '@/presentation/controllers/account/signup/signup-controller'
 import {
   AddAccount,
-  AddAccountModel,
+  AddAccountParams,
   HttpRequest,
   Validation,
   Authentication,
-  AuthenticationModel
+  AuthenticationParams
 } from '@/presentation/controllers/account/signup/signup-controller-protocols'
 import { EmailInUseError, ServerError } from '@/presentation/errors'
 import {
@@ -24,7 +24,7 @@ interface SutTypes {
 
 const makeAddAccount = (): AddAccount => {
   class AddAccountStub implements AddAccount {
-    async add (account: AddAccountModel): Promise<void> {}
+    async add (account: AddAccountParams): Promise<void> {}
   }
 
   return new AddAccountStub()
@@ -41,7 +41,7 @@ const makeValidation = (): Validation => {
 
 const makeAuthentication = (): Authentication => {
   class AuthenticationStub implements Authentication {
-    async auth (authentication: AuthenticationModel): Promise<string> {
+    async auth (authentication: AuthenticationParams): Promise<string> {
       return Promise.resolve('access_token')
     }
   }

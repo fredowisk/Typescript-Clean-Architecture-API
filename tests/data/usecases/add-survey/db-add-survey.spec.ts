@@ -1,10 +1,10 @@
 import { DbAddSurvey } from '@/data/usecases/survey/add-survey/db-add-survey'
 import { AddSurvey } from '@/application/usecases/survey/add-survey/add-survey'
-import { AddSurveyModel } from '@/application/usecases/survey/add-survey/add-survey-model'
+import { AddSurveyParams } from '@/application/usecases/survey/add-survey/add-survey-model'
 
 describe('DbAddSurvey Use case', () => {
   class AddSurveyRepositoryStub implements AddSurvey {
-    async add (data: AddSurveyModel): Promise<void> {
+    async add (data: AddSurveyParams): Promise<void> {
       return Promise.resolve(null)
     }
   }

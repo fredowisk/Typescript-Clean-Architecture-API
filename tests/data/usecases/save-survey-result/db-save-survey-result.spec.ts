@@ -1,6 +1,6 @@
 import {
   SaveSurveyResultRepository,
-  SaveSurveyResultModel,
+  SaveSurveyResultParams,
   SurveyResultModel
 } from '@/data/usecases/survey/save-survey-result/db-save-survey-result-protocols'
 import { DbSaveSurveyResult } from '@/data/usecases/survey/save-survey-result/db-save-survey-result'
@@ -15,7 +15,7 @@ describe('Db Save Survey Result', () => {
   }
 
   class SaveSurveyResultRepositoryStub implements SaveSurveyResultRepository {
-    async save (data: SaveSurveyResultModel): Promise<SurveyResultModel> {
+    async save (data: SaveSurveyResultParams): Promise<SurveyResultModel> {
       return Promise.resolve(fakeResult)
     }
   }

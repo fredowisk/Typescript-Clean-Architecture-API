@@ -9,7 +9,7 @@ import {
 } from '@/presentation/controllers/survey/survey-result/save-survey-result/save-survey-result-protocols'
 import { SurveyModel } from '@/domain/models/survey/survey'
 import { SaveSurveyResult } from 'application/usecases/survey/save-survey-result/save-survey-result'
-import { SaveSurveyResultModel } from 'application/usecases/survey/save-survey-result/save-survey-result-model'
+import { SaveSurveyResultParams } from 'application/usecases/survey/save-survey-result/save-survey-result-model'
 import { SurveyResultModel } from 'domain/models/survey/survey-result'
 
 describe('Save Survey Result Controller', () => {
@@ -40,7 +40,7 @@ describe('Save Survey Result Controller', () => {
   }
 
   class SaveSurveyResultStub implements SaveSurveyResult {
-    async save (data: SaveSurveyResultModel): Promise<SurveyResultModel> {
+    async save (data: SaveSurveyResultParams): Promise<SurveyResultModel> {
       return Promise.resolve(fakeSurveyResult)
     }
   }

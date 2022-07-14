@@ -1,7 +1,7 @@
-interface AddAccountModel {
+interface AddAccountParams {
   name: string
   email: string
   password: string
 }
 
-export { AddAccountModel }
+export { AddAccountParams }

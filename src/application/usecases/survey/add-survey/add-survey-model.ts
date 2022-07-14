@@ -1,9 +1,9 @@
 import { SurveyAnswerModel } from '../../../../domain/models/survey/survey-answer'
 
-interface AddSurveyModel {
+interface AddSurveyParams {
   question: string
   answers: SurveyAnswerModel[]
   date: Date
 }
 
-export { AddSurveyModel }
+export { AddSurveyParams }
