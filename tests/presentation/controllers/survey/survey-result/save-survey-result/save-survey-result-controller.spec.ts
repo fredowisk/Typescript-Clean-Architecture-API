@@ -7,6 +7,9 @@ import {
   serverError
 } from '@/presentation/controllers/survey/survey-result/save-survey-result/save-survey-result-protocols'
 import { SurveyModel } from '@/domain/models/survey/survey'
+import { SaveSurveyResult } from 'application/usecases/survey/save-survey-result/save-survey-result'
+import { SaveSurveyResultModel } from 'application/usecases/survey/save-survey-result/save-survey-result-model'
+import { SurveyResultModel } from 'domain/models/survey/survey-result'
 
 describe('Save Survey Result Controller', () => {
   const fakeSurvey: SurveyModel = {
@@ -21,16 +24,35 @@ describe('Save Survey Result Controller', () => {
     date: new Date()
   }
 
+  const fakeSurveyResult: SurveyResultModel = {
+    id: 'any_id',
+    surveyId: 'survey_id',
+    accountId: 'account_id',
+    answer: 'any_answer',
+    date: new Date()
+  }
+
   class LoadSurveyByIdStub implements LoadSurveyById {
     async loadById (id: string): Promise<SurveyModel> {
       return Promise.resolve(fakeSurvey)
     }
   }
 
+  class SaveSurveyResultStub implements SaveSurveyResult {
+    async save (data: SaveSurveyResultModel): Promise<SurveyResultModel> {
+      return Promise.resolve(fakeSurveyResult)
+    }
+  }
+
   const loadSurveyByIdStub = new LoadSurveyByIdStub()
-  const sut = new SaveSurveyResultController(loadSurveyByIdStub)
+  const saveSurveyResultStub = new SaveSurveyResultStub()
+  const sut = new SaveSurveyResultController(
+    loadSurveyByIdStub,
+    saveSurveyResultStub
+  )
 
   const fakeRequest: HttpRequest = {
+    accountId: 'any_id',
     params: {
       surveyId: 'any_id'
     },
@@ -68,9 +90,31 @@ describe('Save Survey Result Controller', () => {
   })
 
   test('Should return 403 if an invalid answer is provided', async () => {
-    fakeRequest.body.answer = 'wrong_answer'
-    const httpResponse = await sut.handle(fakeRequest)
+    const { params } = fakeRequest
+    const body = {
+      answer: 'wrong_answer'
+    }
+    const httpResponse = await sut.handle({ params, body })
 
     expect(httpResponse).toEqual(forbidden(new InvalidParamError('answer')))
+  })
+
+  test('Should call SaveSurveyResult with correct values', async () => {
+    const saveSpy = jest.spyOn(saveSurveyResultStub, 'save')
+
+    await sut.handle(fakeRequest)
+
+    const {
+      accountId,
+      params: { surveyId },
+      body: { answer }
+    } = fakeRequest
+
+    expect(saveSpy).toHaveBeenCalledWith({
+      surveyId,
+      accountId,
+      answer,
+      date: new Date()
+    })
   })
 })
