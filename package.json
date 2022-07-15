@@ -1,6 +1,6 @@
 {
   "name": "node-clean-code",
-  "version": "2.1.4",
+  "version": "2.1.0",
   "description": "",
   "main": "index.js",
   "scripts": {
