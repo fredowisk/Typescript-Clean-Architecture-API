@@ -1,27 +1,11 @@
 import { DbAddSurvey } from '@/data/usecases/survey/add-survey/db-add-survey'
-import { AddSurvey } from '@/application/usecases/survey/add-survey/add-survey'
-import { AddSurveyModel } from '@/application/usecases/survey/add-survey/add-survey-model'
+import { mockAddSurveyRepository, mockAddSurveyParams } from '@/tests/utils/index'
 
 describe('DbAddSurvey Use case', () => {
-  class AddSurveyRepositoryStub implements AddSurvey {
-    async add (data: AddSurveyModel): Promise<void> {
-      return Promise.resolve(null)
-    }
-  }
-
-  const addSurveyRepositoryStub = new AddSurveyRepositoryStub()
+  const addSurveyRepositoryStub = mockAddSurveyRepository()
   const sut = new DbAddSurvey(addSurveyRepositoryStub)
 
-  const fakeSurvey = {
-    question: 'any_question',
-    answers: [
-      {
-        image: 'any_image',
-        answer: 'any_answer'
-      }
-    ],
-    date: new Date()
-  }
+  const fakeSurvey = mockAddSurveyParams()
 
   test('Should call AddSurveyRepository with correct values', async () => {
     const addSpy = jest.spyOn(addSurveyRepositoryStub, 'add')
@@ -33,7 +17,7 @@ describe('DbAddSurvey Use case', () => {
   test('Should throw an Error if AddSurveyRepository throws an Error', async () => {
     jest
       .spyOn(addSurveyRepositoryStub, 'add')
-      .mockReturnValueOnce(Promise.reject(new Error()))
+      .mockRejectedValueOnce(new Error())
     const promise = sut.add(fakeSurvey)
 
     await expect(promise).rejects.toThrow()

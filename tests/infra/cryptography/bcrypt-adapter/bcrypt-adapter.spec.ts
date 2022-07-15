@@ -1,5 +1,6 @@
 import bcrypt from 'bcrypt'
 import { BcryptAdapter } from '@/infra/cryptography/bcrypt-adapter/bcrypt-adapter'
+import env from '@/main/config/env'
 
 jest.mock('bcrypt', () => ({
   hash: async (): Promise<string> => {
@@ -11,15 +12,14 @@ jest.mock('bcrypt', () => ({
   }
 }))
 
-const salt = 12
-const sut = new BcryptAdapter(salt)
+const sut = new BcryptAdapter(env.salt)
 
 describe('Bcrypt Adapter', () => {
   describe('hash()', () => {
     test('Should call bcrypt with correct values', async () => {
       const hashSpy = jest.spyOn(bcrypt, 'hash')
       await sut.hash('valid_password')
-      expect(hashSpy).toHaveBeenCalledWith('valid_password', salt)
+      expect(hashSpy).toHaveBeenCalledWith('valid_password', env.salt)
     })
 
     test('Should return hashed password on success', async () => {
@@ -31,6 +31,7 @@ describe('Bcrypt Adapter', () => {
       jest.spyOn(bcrypt, 'hash').mockImplementation(() => {
         throw new Error()
       })
+
       const promise = sut.hash('valid_password')
       await expect(promise).rejects.toThrow()
     })
@@ -49,17 +50,7 @@ describe('Bcrypt Adapter', () => {
     })
 
     test('Should return false when compare fails', async () => {
-      jest.spyOn(bcrypt, 'compare').mockImplementationOnce(async () => {
-        return Promise.resolve(false)
-      })
-      const isEqual = await sut.compare('valid_password', 'any_hash')
-      expect(isEqual).toBeFalsy()
-    })
-
-    test('Should return false when compare fails', async () => {
-      jest.spyOn(bcrypt, 'compare').mockImplementationOnce(async () => {
-        return Promise.resolve(false)
-      })
+      jest.spyOn(bcrypt, 'compare').mockImplementationOnce(() => false)
       const isEqual = await sut.compare('valid_password', 'any_hash')
       expect(isEqual).toBeFalsy()
     })

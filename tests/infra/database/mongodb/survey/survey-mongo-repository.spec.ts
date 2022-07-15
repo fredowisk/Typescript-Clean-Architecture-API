@@ -1,6 +1,7 @@
 import { MongoHelper } from '@/infra/database/mongodb/helpers/mongo-helper'
 import { SurveyMongoRepository } from '@/infra/database/mongodb/survey-repository/survey-mongo-repository'
-import { Collection } from 'mongodb'
+import { mockAddSurveyParams } from '@/tests/utils/index'
+import { Collection, ObjectId } from 'mongodb'
 
 describe('Survey Mongo Repository', () => {
   let surveyCollection: Collection
@@ -13,16 +14,7 @@ describe('Survey Mongo Repository', () => {
     await MongoHelper.clear('surveys')
   })
 
-  const fakeSurvey: any = {
-    question: 'any_question',
-    answers: [
-      {
-        image: 'any_image',
-        answer: 'any_answer'
-      }
-    ],
-    date: new Date()
-  }
+  const fakeSurvey = mockAddSurveyParams()
 
   const sut = new SurveyMongoRepository()
 
@@ -33,7 +25,9 @@ describe('Survey Mongo Repository', () => {
       const survey = await surveyCollection.findOne({
         question: fakeSurvey.question
       })
+
       expect(survey).toBeTruthy()
+      expect(survey._id).toBeTruthy()
     })
   })
 
@@ -55,9 +49,11 @@ describe('Survey Mongo Repository', () => {
 
   describe('loadById', () => {
     test('Should load survey by id on success', async () => {
-      await surveyCollection.insertOne(fakeSurvey)
+      const { insertedId } = await surveyCollection.insertOne(fakeSurvey)
 
-      const survey = await sut.loadById(fakeSurvey.id)
+      const id = new ObjectId(insertedId) as unknown as string
+
+      const survey = await sut.loadById(id)
 
       expect(survey).toBeTruthy()
       expect(survey.id).toBeTruthy()

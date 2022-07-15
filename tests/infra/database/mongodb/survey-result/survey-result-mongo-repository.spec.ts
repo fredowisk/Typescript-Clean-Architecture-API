@@ -1,5 +1,6 @@
 import { MongoHelper } from '@/infra/database/mongodb/helpers/mongo-helper'
 import { SurveyResultMongoRepository } from '@/infra/database/mongodb/survey-result/survey-result-mongo-repository'
+import { mockSaveSurveyResultParams } from '@/tests/utils'
 import { Collection } from 'mongodb'
 
 describe('Survey Result Mongo Repository', () => {
@@ -13,31 +14,27 @@ describe('Survey Result Mongo Repository', () => {
     await MongoHelper.clear('surveyResults')
   })
 
-  const fakeSurveyResult = {
-    surveyId: 'survey_id',
-    accountId: 'account_id',
-    answer: 'any_answer',
-    date: new Date()
-  }
+  const fakeSurveyResultParams = mockSaveSurveyResultParams()
 
   const sut = new SurveyResultMongoRepository()
 
   test('Should add a survey result if its new', async () => {
-    const surveyResult = await sut.save(fakeSurveyResult)
+    const surveyResult = await sut.save(fakeSurveyResultParams)
 
+    expect(surveyResult).toBeTruthy()
     expect(surveyResult.id).toBeTruthy()
   })
 
   test('Should update survey result if its not new', async () => {
     const { insertedId } = await surveyResultCollection.insertOne(
-      fakeSurveyResult
+      fakeSurveyResultParams
     )
 
-    fakeSurveyResult.answer = 'other_answer'
+    fakeSurveyResultParams.answer = 'other_answer'
 
-    const surveyResult = await sut.save(fakeSurveyResult)
+    const surveyResult = await sut.save(fakeSurveyResultParams)
 
     expect(surveyResult.id).toEqual(insertedId)
-    expect(surveyResult.answer).toBe(fakeSurveyResult.answer)
+    expect(surveyResult.answer).toBe(fakeSurveyResultParams.answer)
   })
 })

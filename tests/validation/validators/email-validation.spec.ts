@@ -1,30 +1,10 @@
 import { InvalidParamError } from '@/presentation/errors/invalid-param-error'
+import { mockEmailValidator } from '@/tests/utils/index'
 import { EmailValidation } from '@/validation/validators/email-validation'
-import { EmailValidator } from '@/validation/protocols/email-validator'
 
-interface SutTypes {
-  sut: EmailValidation
-  emailValidatorStub: EmailValidator
-}
+const emailValidatorStub = mockEmailValidator()
 
-const makeEmailValidator = (): EmailValidator => {
-  class EmailValidatorStub implements EmailValidator {
-    isValid (email: string): boolean {
-      return true
-    }
-  }
-  return new EmailValidatorStub()
-}
-
-const { sut, emailValidatorStub } = ((): SutTypes => {
-  const emailValidatorStub = makeEmailValidator()
-
-  const sut = new EmailValidation('email', emailValidatorStub)
-  return {
-    sut,
-    emailValidatorStub
-  }
-})()
+const sut = new EmailValidation('email', emailValidatorStub)
 
 const email = 'any_email@mail.com'
 

@@ -1,42 +1,13 @@
 import { DbLoadSurveys } from '@/data/usecases/survey/load-surveys/db-load-surveys'
 import {
-  LoadSurveysRepository,
-  SurveyModel
-} from '@/data/usecases/survey/load-surveys/db-load-surveys-protocols'
+  mockSurveyModel,
+  mockLoadSurveysRepository
+} from '@/tests/utils/index'
 
 describe('Db Load Surveys', () => {
-  const fakeSurveysList: SurveyModel[] = [
-    {
-      id: 'any_id',
-      question: 'any_question',
-      answers: [
-        {
-          image: 'any_image',
-          answer: 'any_answer'
-        }
-      ],
-      date: new Date()
-    },
-    {
-      id: 'other_id',
-      question: 'other_question',
-      answers: [
-        {
-          image: 'other_image',
-          answer: 'other_answer'
-        }
-      ],
-      date: new Date()
-    }
-  ]
+  const fakeSurveysList = [mockSurveyModel()]
 
-  class LoadSurveysRepositoryStub implements LoadSurveysRepository {
-    async loadAll (): Promise<SurveyModel[]> {
-      return Promise.resolve(fakeSurveysList)
-    }
-  }
-
-  const loadSurveysRepositoryStub = new LoadSurveysRepositoryStub()
+  const loadSurveysRepositoryStub = mockLoadSurveysRepository()
   const sut = new DbLoadSurveys(loadSurveysRepositoryStub)
 
   test('Should call LoadSurveysRepository', async () => {

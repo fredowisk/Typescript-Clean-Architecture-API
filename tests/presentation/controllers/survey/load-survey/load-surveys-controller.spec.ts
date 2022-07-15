@@ -1,45 +1,15 @@
 import { LoadSurveysController } from '@/presentation/controllers/survey/load-survey/load-surveys-controller'
 import {
-  LoadSurveys,
   noContent,
   ok,
-  serverError,
-  SurveyModel
+  serverError
 } from '@/presentation/controllers/survey/load-survey/load-surveys-controller-protocols'
+import { mockLoadSurveysUseCase, mockSurveyModel } from '@/tests/utils/index'
 
 describe('Load Surveys Controller', () => {
-  const fakeSurveysList: SurveyModel[] = [
-    {
-      id: 'any_id',
-      question: 'any_question',
-      answers: [
-        {
-          image: 'any_image',
-          answer: 'any_answer'
-        }
-      ],
-      date: new Date()
-    },
-    {
-      id: 'other_id',
-      question: 'other_question',
-      answers: [
-        {
-          image: 'other_image',
-          answer: 'other_answer'
-        }
-      ],
-      date: new Date()
-    }
-  ]
+  const fakeSurveysList = [mockSurveyModel()]
 
-  class LoadSurveysStub implements LoadSurveys {
-    async load (): Promise<SurveyModel[]> {
-      return Promise.resolve(fakeSurveysList)
-    }
-  }
-
-  const loadSurveysStub = new LoadSurveysStub()
+  const loadSurveysStub = mockLoadSurveysUseCase()
   const sut = new LoadSurveysController(loadSurveysStub)
 
   test('Should call LoadSurveys', async () => {
