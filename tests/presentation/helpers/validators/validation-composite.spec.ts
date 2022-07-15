@@ -1,21 +1,16 @@
 import { InvalidParamError } from '@/presentation/errors'
-import { Validation } from '@/presentation/protocols/validation'
+import { mockValidation } from '@/tests/utils/index'
 import { ValidationComposite } from '@/validation/validators/validation-composite'
 
 describe('Validation Composite', () => {
-  class ValidationStub implements Validation {
-    validate (input: any): Error {
-      return null
-    }
-  }
-
-  const validationStubs = [new ValidationStub(), new ValidationStub()]
+  const validationStubs = [mockValidation(), mockValidation()]
   const sut = new ValidationComposite(validationStubs)
 
   test('Should return the same error of validation if validation fails', () => {
     jest
       .spyOn(validationStubs[1], 'validate')
       .mockReturnValueOnce(new InvalidParamError('field'))
+
     const error = sut.validate({
       field: 'any_value'
     })
@@ -30,6 +25,7 @@ describe('Validation Composite', () => {
     jest
       .spyOn(validationStubs[1], 'validate')
       .mockReturnValueOnce(null)
+
     const error = sut.validate({
       field: 'any_value'
     })

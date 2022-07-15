@@ -1,28 +1,12 @@
-import {
-  SurveyModel,
-  LoadSurveyByIdRepository
-} from '@/data/usecases/survey/load-survey-by-id/db-load-survey-by-id-protocols'
 import { DbLoadSurveyById } from '@/data/usecases/survey/load-survey-by-id/db-load-survey-by-id'
+import {
+  mockLoadSurveyByIdRepository,
+  mockSurveyModel
+} from '@/tests/utils/index'
 
 describe('Db LoadSurvey By Id', () => {
-  const fakeSurvey: SurveyModel = {
-    id: 'any_id',
-    question: 'any_question',
-    answers: [
-      {
-        image: 'any_image',
-        answer: 'any_answer'
-      }
-    ],
-    date: new Date()
-  }
-
-  class LoadSurveyByIdRepositoryStub implements LoadSurveyByIdRepository {
-    async loadById (id: string): Promise<SurveyModel> {
-      return Promise.resolve(fakeSurvey)
-    }
-  }
-  const loadSurveyByIdRepositoryStub = new LoadSurveyByIdRepositoryStub()
+  const fakeSurvey = mockSurveyModel()
+  const loadSurveyByIdRepositoryStub = mockLoadSurveyByIdRepository()
   const sut = new DbLoadSurveyById(loadSurveyByIdRepositoryStub)
 
   test('Should call LoadSurveyByIdRepository with a correct id', async () => {

@@ -1,44 +1,21 @@
 import { AddSurveyController } from '@/presentation/controllers/survey/add-survey/add-survey-controller'
-import { HttpRequest } from '@/presentation/protocols/http'
 import {
   badRequest,
   noContent,
   serverError
 } from '@/presentation/helpers/http/http-helper'
-import { Validation } from '@/presentation/protocols/validation'
-import { AddSurvey } from '@/application/usecases/survey/add-survey/add-survey'
-import { AddSurveyParams } from '@/application/usecases/survey/add-survey/add-survey-model'
-import MockDate from 'mockdate'
+import {
+  mockAddSurveyUseCase,
+  mockSurveyHttpRequest,
+  mockValidation
+} from '@/tests/utils'
 
 describe('Add Survey Controller', () => {
-  class ValidationStub implements Validation {
-    validate (input: any): Error {
-      return null
-    }
-  }
-
-  class AddSurveyStub implements AddSurvey {
-    async add (data: AddSurveyParams): Promise<void> {}
-  }
-
-  const validationStub = new ValidationStub()
-  const addSurveyStub = new AddSurveyStub()
+  const validationStub = mockValidation()
+  const addSurveyStub = mockAddSurveyUseCase()
   const sut = new AddSurveyController(validationStub, addSurveyStub)
 
-  const httpRequest: HttpRequest = {
-    body: {
-      question: 'any_question',
-      answers: [
-        {
-          image: 'any_image',
-          answer: 'any_answer'
-        }
-      ],
-      date: new Date()
-    }
-  }
-
-  MockDate.set(new Date())
+  const httpRequest = mockSurveyHttpRequest()
 
   test('Should call Validation with correct values', async () => {
     const validateSpy = jest.spyOn(validationStub, 'validate')
@@ -62,9 +39,8 @@ describe('Add Survey Controller', () => {
   })
 
   test('Should return 500 if AddSurvey throw an Error', async () => {
-    jest
-      .spyOn(addSurveyStub, 'add')
-      .mockReturnValueOnce(Promise.reject(new Error()))
+    jest.spyOn(addSurveyStub, 'add').mockRejectedValueOnce(new Error())
+
     const httpResponse = await sut.handle(httpRequest)
 
     expect(httpResponse).toEqual(serverError(new Error()))

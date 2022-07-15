@@ -1,37 +1,15 @@
 import { DbLoadAccountByToken } from '@/data/usecases/account/load-account/db-load-account-by-token'
 import {
-  LoadAccountByTokenRepository,
-  AccountModel,
-  Decrypter
-} from '@/data/usecases/account/load-account/db-load-account-by-token-protocols'
+  mockAccountModel,
+  mockLoadAccountByTokenRepository,
+  mockDecrypter
+} from '@/tests/utils'
 
 describe('DbLoadAccountByToken Use case', () => {
-  const fakeAccount = {
-    id: 'valid_id',
-    name: 'valid_name',
-    email: 'valid_email@mail.com',
-    password: 'hashed_password'
-  }
+  const fakeAccount = mockAccountModel()
 
-  class DecrypterStub implements Decrypter {
-    decrypt (value: string): string {
-      return 'any_value'
-    }
-  }
-
-  class LoadAccountByTokenRepositoryStub
-  implements LoadAccountByTokenRepository {
-    async loadByToken (
-      accessToken: string,
-      role?: string
-    ): Promise<AccountModel> {
-      return Promise.resolve(fakeAccount)
-    }
-  }
-
-  const decrypterStub = new DecrypterStub()
-  const loadAccountByTokenRepositoryStub =
-    new LoadAccountByTokenRepositoryStub()
+  const decrypterStub = mockDecrypter()
+  const loadAccountByTokenRepositoryStub = mockLoadAccountByTokenRepository()
 
   const sut = new DbLoadAccountByToken(
     decrypterStub,
@@ -67,7 +45,7 @@ describe('DbLoadAccountByToken Use case', () => {
   test('Should return null if LoadAccountByTokenRepository returns null', async () => {
     jest
       .spyOn(loadAccountByTokenRepositoryStub, 'loadByToken')
-      .mockResolvedValueOnce(Promise.resolve(null))
+      .mockResolvedValueOnce(null)
 
     const account = await sut.load(accessToken, role)
 
@@ -93,7 +71,7 @@ describe('DbLoadAccountByToken Use case', () => {
   test('Should throw an Error if Decrypter throws an Error', async () => {
     jest
       .spyOn(loadAccountByTokenRepositoryStub, 'loadByToken')
-      .mockResolvedValueOnce(Promise.reject(new Error()))
+      .mockRejectedValueOnce(new Error())
 
     const promise = sut.load(accessToken, role)
 

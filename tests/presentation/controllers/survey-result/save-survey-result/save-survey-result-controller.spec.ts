@@ -1,66 +1,28 @@
 import { SaveSurveyResultController } from '@/presentation/controllers/survey/survey-result/save-survey-result/save-survey-result-controller'
 import {
-  LoadSurveyById,
   forbidden,
   InvalidParamError,
-  HttpRequest,
   serverError,
   ok
 } from '@/presentation/controllers/survey/survey-result/save-survey-result/save-survey-result-protocols'
-import { SurveyModel } from '@/domain/models/survey/survey'
-import { SaveSurveyResult } from 'application/usecases/survey/save-survey-result/save-survey-result'
-import { SaveSurveyResultParams } from 'application/usecases/survey/save-survey-result/save-survey-result-model'
-import { SurveyResultModel } from 'domain/models/survey/survey-result'
+import {
+  mockLoadSurveyByIdUseCase,
+  mockSaveSurveyResultHttpRequest,
+  mockSaveSurveyResultUseCase,
+  mockSurveyResultModel
+} from '@/tests/utils'
 
 describe('Save Survey Result Controller', () => {
-  const fakeSurvey: SurveyModel = {
-    id: 'any_id',
-    question: 'any_question',
-    answers: [
-      {
-        image: 'any_image',
-        answer: 'any_answer'
-      }
-    ],
-    date: new Date()
-  }
+  const fakeSurveyResult = mockSurveyResultModel()
 
-  const fakeSurveyResult: SurveyResultModel = {
-    id: 'any_id',
-    surveyId: 'survey_id',
-    accountId: 'account_id',
-    answer: 'any_answer',
-    date: new Date()
-  }
-
-  class LoadSurveyByIdStub implements LoadSurveyById {
-    async loadById (id: string): Promise<SurveyModel> {
-      return Promise.resolve(fakeSurvey)
-    }
-  }
-
-  class SaveSurveyResultStub implements SaveSurveyResult {
-    async save (data: SaveSurveyResultParams): Promise<SurveyResultModel> {
-      return Promise.resolve(fakeSurveyResult)
-    }
-  }
-
-  const loadSurveyByIdStub = new LoadSurveyByIdStub()
-  const saveSurveyResultStub = new SaveSurveyResultStub()
+  const loadSurveyByIdStub = mockLoadSurveyByIdUseCase()
+  const saveSurveyResultStub = mockSaveSurveyResultUseCase()
   const sut = new SaveSurveyResultController(
     loadSurveyByIdStub,
     saveSurveyResultStub
   )
 
-  const fakeRequest: HttpRequest = {
-    accountId: 'any_id',
-    params: {
-      surveyId: 'any_id'
-    },
-    body: {
-      answer: 'any_answer'
-    }
-  }
+  const fakeRequest = mockSaveSurveyResultHttpRequest()
 
   test('Should call LoadSurveyById with correct values', async () => {
     const loadByIdSpy = jest.spyOn(loadSurveyByIdStub, 'loadById')
@@ -71,9 +33,7 @@ describe('Save Survey Result Controller', () => {
   })
 
   test('Should return 403 if LoadSurveyById returns null', async () => {
-    jest
-      .spyOn(loadSurveyByIdStub, 'loadById')
-      .mockResolvedValueOnce(Promise.resolve(null))
+    jest.spyOn(loadSurveyByIdStub, 'loadById').mockResolvedValueOnce(null)
 
     const httpResponse = await sut.handle(fakeRequest)
 

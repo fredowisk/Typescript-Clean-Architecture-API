@@ -1,9 +1,9 @@
 import {
-  AddAccountModel
+  AddAccountParams
 } from '@/presentation/controllers/account/signup/signup-controller-protocols'
 
 interface AddAccount {
-  add: (account: AddAccountModel) => Promise<void>
+  add: (account: AddAccountParams) => Promise<void>
 }
 
 export { AddAccount }

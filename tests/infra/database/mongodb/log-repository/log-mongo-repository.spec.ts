@@ -7,7 +7,7 @@ describe('Log Mongo Repository', () => {
   })
 
   afterAll(async () => {
-    await Promise.all([MongoHelper.disconnect(), MongoHelper.clear('logs')])
+    await MongoHelper.clear('logs')
   })
 
   const sut = new ErrorMongoRepository()
@@ -15,9 +15,10 @@ describe('Log Mongo Repository', () => {
   test('Should save the error stack and return nothing', async () => {
     const fakeStack = 'any_stack'
     const spyAccountRepository = jest.spyOn(sut, 'log')
-    await sut.log(fakeStack)
+    const log = await sut.log(fakeStack)
 
     expect(spyAccountRepository).toHaveBeenCalledWith('any_stack')
+    expect(log).toBeFalsy()
   })
 
   test('Should return the quantity of logs in the collection', async () => {

@@ -2,8 +2,7 @@ import request from 'supertest'
 import app from '@/main/config/app'
 import { MongoHelper } from '@/infra/database/mongodb/helpers/mongo-helper'
 import { Collection } from 'mongodb'
-import { sign } from 'jsonwebtoken'
-import env from '@/main/config/env'
+import { mockAddSurveyParams, mockAccessToken } from '@/tests/utils'
 
 describe('Survey Result Routes', () => {
   let accountCollection: Collection
@@ -12,55 +11,20 @@ describe('Survey Result Routes', () => {
 
   beforeAll(async () => {
     await MongoHelper.connect(process.env.MONGO_URL)
-    accountCollection = await MongoHelper.getCollection('accounts')
-    surveyCollection = await MongoHelper.getCollection('surveys')
-    await MongoHelper.clear('accounts')
-    await MongoHelper.clear('surveys')
-    await MongoHelper.clear('surveyResults')
-    accessToken = await makeAccessToken()
+    await Promise.all([
+      MongoHelper.clear('accounts'),
+      MongoHelper.clear('surveys'),
+      MongoHelper.clear('surveyResults'),
+      (accountCollection = await MongoHelper.getCollection('accounts')),
+      (surveyCollection = await MongoHelper.getCollection('surveys')),
+      (accessToken = await mockAccessToken(accountCollection))
+    ])
   })
 
-  const fakeSurvey: any = {
-    question: 'any_question',
-    answers: [
-      {
-        image: 'any_image',
-        answer: 'any_answer'
-      }
-    ],
-    date: new Date()
-  }
-
-  const makeAccessToken = async (): Promise<string> => {
-    const newUser: any = {
-      name: 'Fred',
-      email: 'fred@mail.com',
-      password: '123',
-      role: 'admin'
-    }
-
-    await accountCollection.insertOne(newUser)
-
-    const { _id: id } = newUser
-
-    const token = sign({ id }, env.jwtSecret)
-
-    await accountCollection.updateOne(
-      {
-        _id: id
-      },
-      {
-        $set: {
-          accessToken: token
-        }
-      }
-    )
-
-    return token
-  }
+  const fakeSurvey = mockAddSurveyParams()
 
   describe('PUT /surveys/:surveyId/results', () => {
-    test('Should return 403 on save survey result without accessToken', async () => {
+    test('Should return 403 when call SaveSurveyResult without accessToken', async () => {
       await request(app)
         .put('/api/surveys/any_id/results')
         .send({

@@ -1,12 +1,4 @@
-import {
-  Authentication,
-  HttpRequest,
-  Validation
-} from '@/presentation/controllers/account/login/login-controller-protocols'
-import {
-  InvalidParamError,
-  ServerError
-} from '@/presentation/errors'
+import { InvalidParamError, ServerError } from '@/presentation/errors'
 import {
   badRequest,
   ok,
@@ -14,72 +6,47 @@ import {
   unauthorized
 } from '@/presentation/helpers/http/http-helper'
 import { LoginController } from '@/presentation/controllers/account/login/login-controller'
-import { AuthenticationParams } from '@/application/usecases/account/authentication/authentication-model'
+import {
+  mockAuthentication,
+  mockHttpRequest,
+  mockValidation
+} from '@/tests/utils'
 
 describe('Login Controller', () => {
-  class AuthenticationStub implements Authentication {
-    async auth (authentication: AuthenticationParams): Promise<string> {
-      return Promise.resolve('access_token')
-    }
-  }
-
-  class ValidationStub implements Validation {
-    validate (input: any): Error {
-      return null
-    }
-  }
-
-  const validationStub = new ValidationStub()
-  const authenticationStub = new AuthenticationStub()
+  const validationStub = mockValidation()
+  const authenticationStub = mockAuthentication()
   const sut = new LoginController(authenticationStub, validationStub)
 
-  const makeHttpRequest = (property?: string): HttpRequest => {
-    const httpRequest: HttpRequest = {
-      body: {
-        email: 'any_email@mail.com',
-        password: 'any_password'
-      }
-    }
-    if (property) httpRequest.body[property] = undefined
-
-    return httpRequest
-  }
+  const httpRequest = mockHttpRequest()
 
   test('Should call Authentication with correct values', async () => {
     const authSpy = jest.spyOn(authenticationStub, 'auth')
-    const httpRequest = makeHttpRequest()
     await sut.handle(httpRequest)
     const { email, password } = httpRequest.body
     expect(authSpy).toHaveBeenCalledWith({ email, password })
   })
 
   test('Should return 401 if invalid credentials are provided', async () => {
-    jest
-      .spyOn(authenticationStub, 'auth')
-      .mockReturnValueOnce(Promise.resolve(null))
-    const httpRequest = makeHttpRequest()
+    jest.spyOn(authenticationStub, 'auth').mockResolvedValueOnce(null)
+
     const httResponse = await sut.handle(httpRequest)
     expect(httResponse).toEqual(unauthorized())
   })
 
   test('Should return 500 if Authentication throws an Error', async () => {
-    jest.spyOn(authenticationStub, 'auth').mockImplementationOnce(() => {
-      throw new Error()
-    })
-    const httpRequest = makeHttpRequest()
+    jest.spyOn(authenticationStub, 'auth').mockRejectedValueOnce(new Error())
     const httpResponse = await sut.handle(httpRequest)
+
     expect(httpResponse).toEqual(serverError(new ServerError(null)))
   })
 
   test('Should return 200 if controller is called with correct values', async () => {
-    const httpRequest = makeHttpRequest()
     const httpResponse = await sut.handle(httpRequest)
     expect(httpResponse).toEqual(ok({ accessToken: 'access_token' }))
   })
 
   test('Should call Validation with correct value', async () => {
     const validateSpy = jest.spyOn(validationStub, 'validate')
-    const httpRequest = makeHttpRequest()
 
     await sut.handle(httpRequest)
     expect(validateSpy).toHaveBeenCalledWith(httpRequest.body)
@@ -90,8 +57,9 @@ describe('Login Controller', () => {
       .spyOn(validationStub, 'validate')
       .mockReturnValueOnce(new InvalidParamError('any_field'))
 
-    const httpRequest = makeHttpRequest()
     const httpResponse = await sut.handle(httpRequest)
-    expect(httpResponse).toEqual(badRequest(new InvalidParamError('any_field')))
+    expect(httpResponse).toEqual(
+      badRequest(new InvalidParamError('any_field'))
+    )
   })
 })
