@@ -5,12 +5,13 @@ import {
   serverError,
   unauthorized
 } from './components/'
-import { loginPath, surveyPath } from './paths'
+import { loginPath, signUpPath, surveyPath } from './paths'
 import {
   accountSchema,
   apiKeyAuthSchema,
   errorSchema,
   loginParamsSchema,
+  signUpParamsSchema,
   surveyAnswerSchema,
   surveySchema,
   surveysSchema
@@ -42,7 +43,8 @@ export default {
   ],
   paths: {
     '/login': loginPath,
-    '/survey': surveyPath
+    '/survey': surveyPath,
+    '/signup': signUpPath
   },
   schemas: {
     account: accountSchema,
@@ -50,7 +52,8 @@ export default {
     error: errorSchema,
     surveys: surveysSchema,
     survey: surveySchema,
-    surveyAnswer: surveyAnswerSchema
+    surveyAnswer: surveyAnswerSchema,
+    signupParams: signUpParamsSchema
   },
   components: {
     securitySchemes: {
