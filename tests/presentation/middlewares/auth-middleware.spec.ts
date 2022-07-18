@@ -6,7 +6,10 @@ import {
 } from '@/presentation/helpers/http/http-helper'
 import { AccessDeniedError } from '@/presentation/errors/access-denied-error'
 import { AuthMiddleware } from '@/presentation/middlewares/auth-middleware'
-import { mockAccountModel, mockLoadAccountByTokenUseCase } from '@/tests/utils/index'
+import {
+  mockAccountModel,
+  mockLoadAccountByTokenUseCase
+} from '@/tests/utils/index'
 
 describe('Auth Middleware', () => {
   const fakeAccount = mockAccountModel()
@@ -21,6 +24,12 @@ describe('Auth Middleware', () => {
 
   test('Should return 403 if there is no x-access-token in headers', async () => {
     const httpResponse = await sut.handle(httpRequest)
+
+    expect(httpResponse).toEqual(forbidden(new AccessDeniedError()))
+  })
+
+  test('Should return 403 if there is no headers', async () => {
+    const httpResponse = await sut.handle({ body: {} })
 
     expect(httpResponse).toEqual(forbidden(new AccessDeniedError()))
   })
@@ -41,9 +50,7 @@ describe('Auth Middleware', () => {
   })
 
   test('Should return 403 if LoadAccountByToken returns null', async () => {
-    jest
-      .spyOn(loadAccountByTokenStub, 'load')
-      .mockResolvedValueOnce(null)
+    jest.spyOn(loadAccountByTokenStub, 'load').mockResolvedValueOnce(null)
 
     const httpResponse = await sut.handle(httpRequest)
 

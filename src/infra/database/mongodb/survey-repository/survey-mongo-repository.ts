@@ -22,7 +22,7 @@ implements
     const surveyCollection = await MongoHelper.getCollection('surveys')
     const surveys = await surveyCollection.find().toArray()
 
-    return surveys?.map((survey) => MongoHelper.map<SurveyModel>(survey))
+    return surveys.map((survey) => MongoHelper.map<SurveyModel>(survey))
   }
 
   async loadById (id: string): Promise<SurveyModel> {

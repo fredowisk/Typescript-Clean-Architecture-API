@@ -1,6 +1,6 @@
 import { MongoHelper } from '@/infra/database/mongodb/helpers/mongo-helper'
 import { AccountMongoRepository } from '@/infra/database/mongodb/account-repository/account-mongo-repository'
-import { Collection, ObjectId } from 'mongodb'
+import { Collection, ObjectId, Document } from 'mongodb'
 import { AccountModel } from '@/domain/models/account/account'
 import { mockAddAccountParams } from '@/tests/utils/index'
 
@@ -27,6 +27,22 @@ describe('Account Mongo Repository', () => {
 
       expect(spyAccountRepository).toHaveBeenCalledWith(fakeAccountParams)
       expect(account).toBeFalsy()
+    })
+
+    test('Should return null if add fails', async () => {
+      const collection = {
+        insertOne: () => {
+          return { acknowledged: false, insertedId: 0 }
+        }
+      }
+
+      jest
+        .spyOn(MongoHelper, 'getCollection')
+        .mockResolvedValueOnce(collection as unknown as Collection<Document>)
+
+      const account = await sut.add(fakeAccountParams)
+
+      expect(account).toBeNull()
     })
   })
 

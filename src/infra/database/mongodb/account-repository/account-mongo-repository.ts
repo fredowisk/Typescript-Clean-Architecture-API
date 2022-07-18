@@ -15,8 +15,9 @@ implements
   async add (account: AddAccountParams): Promise<void> {
     const accountData = { ...account }
     const accountCollection = await MongoHelper.getCollection('accounts')
-    const newAccount = await accountCollection.insertOne(accountData)
-    if (!newAccount) return null
+    const { acknowledged } = await accountCollection.insertOne(accountData)
+
+    if (!acknowledged) return null
   }
 
   async loadByEmail (email: string): Promise<AccountModel> {

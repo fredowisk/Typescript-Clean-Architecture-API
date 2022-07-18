@@ -47,6 +47,13 @@ describe('Jwt Adapter', () => {
       expect(verifySpy).toHaveBeenCalledWith(token, env.jwtSecret)
     })
 
+    test('Should return null if verify fails', () => {
+      jest.spyOn(jwt, 'verify').mockReturnValueOnce(null)
+      const decryptedToken = sut.decrypt(token)
+
+      expect(decryptedToken).toBeNull()
+    })
+
     test('Should return a value if verify succeeds', () => {
       const decryptedToken = sut.decrypt(token)
 
