@@ -8,8 +8,11 @@ class DbLoadSurveyResult implements LoadSurveyResult {
   ) {}
 
   async load(surveyId: string, accountId: string): Promise<SurveyResultModel> {
-    await this.loadSurveyResultRepository.loadBySurveyId(surveyId, accountId);
-    return Promise.resolve(null);
+    const survey = await this.loadSurveyResultRepository.loadBySurveyId(
+      surveyId,
+      accountId
+    );
+    return survey;
   }
 }
 
