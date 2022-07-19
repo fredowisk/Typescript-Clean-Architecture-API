@@ -28,4 +28,13 @@ describe("DbLoadSurveyResult Use Case", () => {
       "any_account_id"
     );
   });
+
+  test("Should throw an Error if LoadSurveyResultRepository throws an Error", async () => {
+    jest
+      .spyOn(loadSurveyResultRepositoryStub, "loadBySurveyId")
+      .mockRejectedValueOnce(new Error());
+
+    const promise = sut.load("any_survey_id", "any_account_id");
+    await expect(promise).rejects.toThrow();
+  });
 });
