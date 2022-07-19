@@ -1,5 +1,5 @@
-import { SaveSurveyResult } from "@/application/usecases/survey/save-survey-result/save-survey-result";
-import { SaveSurveyResultParams } from "@/application/usecases/survey/save-survey-result/save-survey-result-model";
+import { SaveSurveyResult } from "@/application/usecases/survey-result/save-survey-result/save-survey-result";
+import { SaveSurveyResultParams } from "@/application/usecases/survey-result/save-survey-result/save-survey-result-model";
 
 const mockSaveSurveyResultUseCase = (): SaveSurveyResult => {
   class SaveSurveyResultStub implements SaveSurveyResult {

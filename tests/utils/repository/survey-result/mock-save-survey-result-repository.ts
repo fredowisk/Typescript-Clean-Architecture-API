@@ -1,4 +1,4 @@
-import { SaveSurveyResultParams } from "@/application/usecases/survey/save-survey-result/save-survey-result-model";
+import { SaveSurveyResultParams } from "@/application/usecases/survey-result/save-survey-result/save-survey-result-model";
 import { SaveSurveyResultRepository } from "@/data/protocols/db/survey-result-repository/save-survey-result-repository";
 import { SurveyResultModel } from "@/domain/models/survey/survey-result";
 import { LoadSurveyResultRepository } from "data/protocols/db/survey-result-repository/load-survey-result-repository";

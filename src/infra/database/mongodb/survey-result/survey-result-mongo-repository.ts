@@ -6,7 +6,7 @@ import { LoadSurveyResultRepository } from "@/data/protocols/db/survey-result-re
 import { ObjectId } from "mongodb";
 import round from "mongo-round";
 import { SurveyResultModel } from "@/domain/models/survey/survey-result";
-import { SaveSurveyResultParams } from "@/application/usecases/survey/save-survey-result/save-survey-result-model";
+import { SaveSurveyResultParams } from "@/application/usecases/survey-result/save-survey-result/save-survey-result-model";
 
 export class SurveyResultMongoRepository
   implements SaveSurveyResultRepository, LoadSurveyResultRepository
