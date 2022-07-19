@@ -3,7 +3,7 @@ import {
   forbidden,
   InvalidParamError,
   serverError,
-  ok
+  noContent
 } from '@/presentation/controllers/survey/survey-result/save-survey-result/save-survey-result-protocols'
 import {
   mockLoadSurveyByIdUseCase,
@@ -87,9 +87,9 @@ describe('Save Survey Result Controller', () => {
     expect(httpResponse).toEqual(serverError(new Error()))
   })
 
-  test('Should return 200 on succcess', async () => {
+  test('Should return 204 on succcess', async () => {
     const httpResponse = await sut.handle(fakeRequest)
 
-    expect(httpResponse).toEqual(ok(fakeSurveyResult))
+    expect(httpResponse).toEqual(noContent())
   })
 })

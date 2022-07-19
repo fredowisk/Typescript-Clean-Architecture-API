@@ -1,9 +1,9 @@
-import { SurveyAnswerModel } from './survey-answer'
+import { SurveyResultAnswerModel } from './survey-answer'
 
 interface SurveyModel {
   id: string
   question: string
-  answers: SurveyAnswerModel[]
+  answers: SurveyResultAnswerModel[]
   date: Date
 }
 

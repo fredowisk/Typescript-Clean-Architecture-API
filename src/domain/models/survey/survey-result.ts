@@ -1,8 +1,9 @@
+import { SurveyResultAnswerModel } from './survey-answer'
+
 interface SurveyResultModel {
-  id: string
   surveyId: string
-  accountId: string
-  answer: string
+  question: string
+  answers: SurveyResultAnswerModel[]
   date: Date
 }
 

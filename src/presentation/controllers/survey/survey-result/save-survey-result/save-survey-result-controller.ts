@@ -1,51 +1,51 @@
 import {
   LoadSurveyById,
   forbidden,
-  ok,
   HttpRequest,
   Controller,
   HttpResponse,
   InvalidParamError,
   serverError,
-  SaveSurveyResult
-} from './save-survey-result-protocols'
+  SaveSurveyResult,
+  noContent,
+} from "./save-survey-result-protocols";
 
 class SaveSurveyResultController implements Controller {
-  constructor (
+  constructor(
     private readonly loadSurveyById: LoadSurveyById,
     private readonly saveSurveyResult: SaveSurveyResult
   ) {}
 
-  async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
+  async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
     try {
       const {
         accountId,
         params: { surveyId },
-        body: { answer }
-      } = httpRequest
+        body: { answer },
+      } = httpRequest;
 
-      const survey = await this.loadSurveyById.loadById(surveyId)
+      const survey = await this.loadSurveyById.loadById(surveyId);
 
-      if (!survey) return forbidden(new InvalidParamError('surveyId'))
+      if (!survey) return forbidden(new InvalidParamError("surveyId"));
 
-      const answers = survey.answers.map((item) => item.answer)
+      const answers = survey.answers.map((item) => item.answer);
 
       if (!answers.includes(answer)) {
-        return forbidden(new InvalidParamError('answer'))
+        return forbidden(new InvalidParamError("answer"));
       }
 
-      const savedSurvey = await this.saveSurveyResult.save({
+      await this.saveSurveyResult.save({
         surveyId,
         accountId,
         answer,
-        date: new Date()
-      })
+        date: new Date(),
+      });
 
-      return ok(savedSurvey)
+      return noContent();
     } catch (error) {
-      return serverError(error)
+      return serverError(error);
     }
   }
 }
 
-export { SaveSurveyResultController }
+export { SaveSurveyResultController };
