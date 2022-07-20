@@ -33,7 +33,7 @@ describe('Survey Result Routes', () => {
         .expect(403)
     })
 
-    test('Should return 204 on save survey result with accessToken', async () => {
+    test('Should return 200 on save survey result with accessToken', async () => {
       const { insertedId } = await surveyCollection.insertOne(fakeSurvey)
 
       await request(app)
@@ -42,7 +42,7 @@ describe('Survey Result Routes', () => {
         .send({
           answer: 'any_answer'
         })
-        .expect(204)
+        .expect(200)
     })
   })
 })
