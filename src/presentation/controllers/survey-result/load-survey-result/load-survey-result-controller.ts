@@ -6,6 +6,7 @@ import {
   HttpResponse,
   InvalidParamError,
   LoadSurveyById,
+  ok,
   serverError,
 } from "../save-survey-result/save-survey-result-protocols";
 
@@ -24,9 +25,12 @@ class LoadSurveyResultController implements Controller {
 
       if (!survey) return forbidden(new InvalidParamError("surveyId"));
 
-      await this.loadSurveyResult.load(surveyId, accountId);
+      const surveyResult = await this.loadSurveyResult.load(
+        surveyId,
+        accountId
+      );
 
-      return Promise.resolve(null);
+      return ok(surveyResult);
     } catch (error) {
       return serverError(error);
     }
