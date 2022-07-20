@@ -1,6 +1,7 @@
 import {
   mockSaveSurveyResultHttpRequest,
   mockSurveyModel,
+  mockSurveyResultModel,
 } from "@/tests/utils/index";
 import { LoadSurveyById } from "@/application/usecases/survey/load-survey-by-id/load-survey-by-id";
 import { SurveyModel } from "@/domain/models/survey/survey";
@@ -8,8 +9,10 @@ import { LoadSurveyResultController } from "@/presentation/controllers/survey-re
 import {
   forbidden,
   InvalidParamError,
-  serverError
+  serverError,
 } from "@/presentation/middlewares/auth-middleware-protocols";
+import { LoadSurveyResult } from "application/usecases/survey-result/load-survey-result/load-survey-result";
+import { SurveyResultModel } from "domain/models/survey/survey-result";
 
 describe("Load Survey Result Controller", () => {
   class LoadSurveyByIdStub implements LoadSurveyById {
@@ -18,9 +21,19 @@ describe("Load Survey Result Controller", () => {
     }
   }
 
-  const loadSurveyByIdStub = new LoadSurveyByIdStub();
+  class LoadSurveyResultStub implements LoadSurveyResult {
+    load(surveyId: string, accountId: string): Promise<SurveyResultModel> {
+      return Promise.resolve(mockSurveyResultModel());
+    }
+  }
 
-  const sut = new LoadSurveyResultController(loadSurveyByIdStub);
+  const loadSurveyByIdStub = new LoadSurveyByIdStub();
+  const loadSurveyResultStub = new LoadSurveyResultStub();
+
+  const sut = new LoadSurveyResultController(
+    loadSurveyByIdStub,
+    loadSurveyResultStub
+  );
 
   const httpRequest = mockSaveSurveyResultHttpRequest();
 
@@ -47,5 +60,18 @@ describe("Load Survey Result Controller", () => {
     const httpResponse = await sut.handle(httpRequest);
 
     expect(httpResponse).toEqual(serverError(new Error()));
+  });
+
+  test("Should call LoadSurveyResult with correct values", async () => {
+    const loadSpy = jest.spyOn(loadSurveyResultStub, "load");
+
+    const {
+      params: { surveyId },
+      accountId,
+    } = httpRequest;
+
+    await sut.handle(httpRequest);
+
+    expect(loadSpy).toHaveBeenCalledWith(surveyId, accountId);
   });
 });
