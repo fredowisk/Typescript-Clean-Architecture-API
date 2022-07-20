@@ -15,10 +15,20 @@ class DbLoadSurveyResult implements LoadSurveyResult {
       accountId
     );
 
-    if(!surveyResult) {
-      await this.loadSurveyByIdRepository.loadById(surveyId);
+    if (!surveyResult) {
+      const { answers, id, ...rest } =
+        await this.loadSurveyByIdRepository.loadById(surveyId);
+      return {
+        surveyId: id,
+        answers: answers.map((answer) => {
+          answer.count = 0;
+          answer.percent = 0;
+          return answer;
+        }),
+        ...rest,
+      };
     }
-    
+
     return surveyResult;
   }
 }
