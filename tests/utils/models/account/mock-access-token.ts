@@ -12,7 +12,7 @@ const mockAccessToken = async (
 
   const id = insertedId.toHexString();
 
-  const token = sign({ id }, env.jwtSecret);
+  const accessToken = sign({ id }, env.jwtSecret);
 
   await accountCollection.updateOne(
     {
@@ -20,12 +20,12 @@ const mockAccessToken = async (
     },
     {
       $set: {
-        accessToken: token,
+        accessToken
       },
     }
   );
 
-  return token;
+  return accessToken;
 };
 
 export { mockAccessToken };
