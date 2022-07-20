@@ -1,7 +1,9 @@
 import { LoadSurveyResultRepository } from "@/data/protocols/db/survey-result-repository/load-survey-result-repository";
-import { mockSurveyResultModel } from "@/tests/utils/index";
+import { mockSurveyModel, mockSurveyResultModel } from "@/tests/utils/index";
 import { DbLoadSurveyResult } from "@/data/usecases/survey/load-survey-result/db-load-survey-result";
 import { SurveyResultModel } from "@/domain/models/survey/survey-result";
+import { LoadSurveyByIdRepository } from "data/protocols/db/survey-repository/load-survey-by-id-repository";
+import { SurveyModel } from "domain/models/survey/survey";
 
 describe("DbLoadSurveyResult Use Case", () => {
   class LoadSurveyResultRepositoryStub implements LoadSurveyResultRepository {
@@ -13,8 +15,18 @@ describe("DbLoadSurveyResult Use Case", () => {
     }
   }
 
+  class LoadSurveyByIdRepositoryStub implements LoadSurveyByIdRepository {
+    loadById(id: string): Promise<SurveyModel> {
+      return Promise.resolve(mockSurveyModel());
+    }
+  }
+
   const loadSurveyResultRepositoryStub = new LoadSurveyResultRepositoryStub();
-  const sut = new DbLoadSurveyResult(loadSurveyResultRepositoryStub);
+  const loadSurveyByIdRepositoryStub = new LoadSurveyByIdRepositoryStub();
+  const sut = new DbLoadSurveyResult(
+    loadSurveyResultRepositoryStub,
+    loadSurveyByIdRepositoryStub
+  );
 
   test("Should call LoadSurveyResultRepository with correct values", async () => {
     const loadBySurveyId = jest.spyOn(
@@ -36,6 +48,17 @@ describe("DbLoadSurveyResult Use Case", () => {
 
     const promise = sut.load("any_survey_id", "any_account_id");
     await expect(promise).rejects.toThrow();
+  });
+
+  test("Should call LoadSurveyByIdRepository if LoadSurveyResultRepository returns null", async () => {
+    const loadByIdSpy = jest.spyOn(loadSurveyByIdRepositoryStub, "loadById");
+    jest
+      .spyOn(loadSurveyResultRepositoryStub, "loadBySurveyId")
+      .mockResolvedValueOnce(null);
+
+    await sut.load("any_survey_id", "any_account_id");
+
+    expect(loadByIdSpy).toHaveBeenCalledWith("any_survey_id");
   });
 
   test("Should return a surveyResultModel on success", async () => {
