@@ -1,14 +1,14 @@
-import { LoadSurveyResult } from "@/application/usecases/survey-result/load-survey-result/load-survey-result";
 import {
   Controller,
-  forbidden,
+  LoadSurveyById,
+  LoadSurveyResult,
   HttpRequest,
   HttpResponse,
+  forbidden,
   InvalidParamError,
-  LoadSurveyById,
   ok,
   serverError,
-} from "../save-survey-result/save-survey-result-protocols";
+} from "./load-survey-result-protocols";
 
 class LoadSurveyResultController implements Controller {
   constructor(
