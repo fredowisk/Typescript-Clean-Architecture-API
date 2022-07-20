@@ -8,6 +8,7 @@ import { LoadSurveyResultController } from "@/presentation/controllers/survey-re
 import {
   forbidden,
   InvalidParamError,
+  serverError
 } from "@/presentation/middlewares/auth-middleware-protocols";
 
 describe("Load Survey Result Controller", () => {
@@ -36,5 +37,15 @@ describe("Load Survey Result Controller", () => {
     const httpResponse = await sut.handle(httpRequest);
 
     expect(httpResponse).toEqual(forbidden(new InvalidParamError("surveyId")));
+  });
+
+  test("Should return 500 if LoadSurveyById throw an Error", async () => {
+    jest
+      .spyOn(loadSurveyByIdStub, "loadById")
+      .mockRejectedValueOnce(new Error());
+
+    const httpResponse = await sut.handle(httpRequest);
+
+    expect(httpResponse).toEqual(serverError(new Error()));
   });
 });
