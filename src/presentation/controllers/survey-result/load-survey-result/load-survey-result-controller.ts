@@ -1,3 +1,4 @@
+import { ObjectId } from "mongodb";
 import {
   Controller,
   LoadSurveyById,
@@ -21,6 +22,7 @@ class LoadSurveyResultController implements Controller {
         params: { surveyId },
         accountId,
       } = httpRequest;
+
       const survey = await this.loadSurveyById.loadById(surveyId);
 
       if (!survey) return forbidden(new InvalidParamError("surveyId"));

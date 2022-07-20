@@ -1,7 +1,7 @@
 import request from "supertest";
 import app from "@/main/config/app";
 import { MongoHelper } from "@/infra/database/mongodb/helpers/mongo-helper";
-import { Collection } from "mongodb";
+import { Collection, ObjectId } from "mongodb";
 import { mockAddSurveyParams, mockAccessToken } from "@/tests/utils";
 
 describe("Survey Result Routes", () => {
@@ -47,8 +47,18 @@ describe("Survey Result Routes", () => {
   });
 
   describe("GET /surveys/:surveyId/results", () => {
-    test("Should return 403 on load survey result without accessToken", async () => {
+    test("Should return 403 when call LoadSurveyResult without accessToken", async () => {
       await request(app).get("/api/surveys/any_id/results").expect(403);
+    });
+
+    test("Should return 200 if LoadSurveyResult succeeds", async () => {
+      const { insertedId } = await surveyCollection.insertOne(
+        mockAddSurveyParams()
+      );
+      await request(app)
+        .get(`/api/surveys/${insertedId.toHexString()}/results`)
+        .set("x-access-token", accessToken)
+        .expect(200);
     });
   });
 });
