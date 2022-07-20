@@ -4,7 +4,7 @@ import { ErrorMongoRepository } from "@/infra/database/mongodb/log-repository/lo
 import { SurveyMongoRepository } from "@/infra/database/mongodb/survey-repository/survey-mongo-repository";
 import { SurveyResultMongoRepository } from "@/infra/database/mongodb/survey-result/survey-result-mongo-repository";
 import { LogControllerDecorator } from "@/main/decorators/log-controller-decorator";
-import { SaveSurveyResultController } from "@/presentation/controllers/survey/survey-result/save-survey-result/save-survey-result-controller";
+import { SaveSurveyResultController } from "@/presentation/controllers/survey-result/save-survey-result/save-survey-result-controller";
 import { Controller } from "@/presentation/protocols/";
 
 const makeSaveSurveyResultController = (): Controller => {

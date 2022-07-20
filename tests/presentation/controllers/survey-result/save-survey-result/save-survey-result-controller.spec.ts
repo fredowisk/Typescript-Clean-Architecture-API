@@ -1,10 +1,10 @@
-import { SaveSurveyResultController } from "@/presentation/controllers/survey/survey-result/save-survey-result/save-survey-result-controller";
+import { SaveSurveyResultController } from "@/presentation/controllers/survey-result/save-survey-result/save-survey-result-controller";
 import {
   forbidden,
   InvalidParamError,
   serverError,
   ok,
-} from "@/presentation/controllers/survey/survey-result/save-survey-result/save-survey-result-protocols";
+} from "@/presentation/controllers/survey-result/save-survey-result/save-survey-result-protocols";
 import {
   mockLoadSurveyByIdUseCase,
   mockSaveSurveyResultHttpRequest,
